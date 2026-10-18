@@ -172,7 +172,8 @@ class _TopBar extends StatelessWidget {
       listenable: client,
       builder: (context, _) {
         final s = client.snapshot;
-        final parts = <String>['Předávka', settings.mode.label];
+        // Režim předávky se jmenuje stejně jako aplikace — nepsat to dvakrát.
+        final parts = <String>[if (settings.mode != DisplayMode.pass) 'Předávka', settings.mode.label];
         if (settings.mode == DisplayMode.kitchen && settings.station.isNotEmpty) {
           parts.add(s?.stationName(settings.station) ?? settings.station);
           if (settings.cook.isNotEmpty) parts.add(settings.cook);
@@ -193,7 +194,7 @@ class _TopBar extends StatelessWidget {
                 const Icon(Icons.volume_off_outlined, size: 20, color: Palette.textFaint),
               ],
               const Spacer(),
-              const _Clock(),
+              _Clock(serverNow: s?.now),
               const SizedBox(width: 16),
               StatusDot(client: client),
             ],
@@ -204,8 +205,11 @@ class _TopBar extends StatelessWidget {
   }
 }
 
+/// Čas ze serveru (poslední snapshot), aby se displeje shodly i s rozladěnými hodinami tabletů.
 class _Clock extends StatefulWidget {
-  const _Clock();
+  const _Clock({this.serverNow});
+
+  final DateTime? serverNow;
 
   @override
   State<_Clock> createState() => _ClockState();
@@ -229,8 +233,9 @@ class _ClockState extends State<_Clock> {
 
   @override
   Widget build(BuildContext context) {
-    final hh = _now.hour.toString().padLeft(2, '0');
-    final mm = _now.minute.toString().padLeft(2, '0');
+    final t = (widget.serverNow ?? _now).toLocal();
+    final hh = t.hour.toString().padLeft(2, '0');
+    final mm = t.minute.toString().padLeft(2, '0');
     return Text('$hh:$mm', style: const TextStyle(fontSize: 20, color: Palette.textDim));
   }
 }

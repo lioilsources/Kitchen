@@ -2,6 +2,11 @@
 // display snapshots and voice lines as JSON — fixtures for UI work and demos.
 //
 //	go run ./tools/scenarios -config config.dev.yaml > scenarios.json
+//
+// With -serve it instead serves one scenario through the real API and displays, clock stopped at
+// the snapshot — for screenshots of the actual UI:
+//
+//	go run ./tools/scenarios -serve :8091 -scenario rush -app apps/display/build/web
 package main
 
 import (
@@ -9,15 +14,19 @@ import (
 	"encoding/json"
 	"flag"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"time"
 
+	"github.com/lioilsources/Kitchen/internal/api"
 	"github.com/lioilsources/Kitchen/internal/config"
 	"github.com/lioilsources/Kitchen/internal/eta"
+	"github.com/lioilsources/Kitchen/internal/hub"
 	"github.com/lioilsources/Kitchen/internal/queue"
 	"github.com/lioilsources/Kitchen/internal/store"
 	"github.com/lioilsources/Kitchen/internal/tts"
+	"github.com/lioilsources/Kitchen/web"
 )
 
 type voice struct{ said []tts.Announcement }
@@ -93,6 +102,9 @@ func l(sku string, qty int, mods ...string) queue.OrderLine {
 
 func main() {
 	cfgPath := flag.String("config", "config.dev.yaml", "config with menu and stations")
+	serve := flag.String("serve", "", "serve one scenario on this address instead of printing JSON")
+	only := flag.String("scenario", "rush", "scenario to serve (empty, few, rush)")
+	appDir := flag.String("app", "", "Flutter web build to serve at /app/")
 	flag.Parse()
 	cfg, err := config.Load(*cfgPath)
 	if err != nil {
@@ -105,8 +117,10 @@ func main() {
 	defer os.RemoveAll(dir)
 
 	var out []Scenario
+	sims := map[string]*sim{}
 	snap := func(id, title string, s *sim, since int) {
 		out = append(out, Scenario{ID: id, Title: title, Snapshot: s.e.Snapshot(), Voice: s.v.said[since:]})
+		sims[id] = s
 	}
 
 	// 1) Prázdná fronta: odpoledne po obědě, poslední stůl odešel.
@@ -181,9 +195,33 @@ func main() {
 	s.wait(90 * time.Second)
 	snap("rush", "Nestíháme!", s, 0)
 
+	if *serve != "" {
+		s, ok := sims[*only]
+		if !ok {
+			log.Fatalf("unknown scenario %q", *only)
+		}
+		serveSim(s, *serve, *appDir)
+		return
+	}
+
 	enc := json.NewEncoder(os.Stdout)
 	enc.SetIndent("", " ")
 	if err := enc.Encode(out); err != nil {
 		log.Fatal(err)
 	}
+}
+
+// serveSim exposes a finished scenario through the production API, hub and web displays.
+// The clock stays frozen, so waits and ETAs read exactly as in the snapshot.
+func serveSim(s *sim, addr, appDir string) {
+	h := hub.New(func() any { return s.e.Snapshot() })
+	s.e.OnChange(h.Notify)
+	go h.Run(context.Background())
+	srv := &api.Server{Engine: s.e, WS: h, Web: web.FS, Clients: h.Clients,
+		Latency: func() time.Duration { return 0 }}
+	if appDir != "" {
+		srv.App = os.DirFS(appDir)
+	}
+	log.Printf("scenario at %s, clock stopped at %s", addr, s.now.Format("15:04"))
+	log.Fatal(http.ListenAndServe(addr, srv.Handler()))
 }

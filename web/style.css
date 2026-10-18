@@ -80,6 +80,15 @@ main { padding: 16px 20px 80px; }
 .floor tr.late td { background: #3d211d; }
 .floor tr.hold { opacity: .5; }
 .floor .empty { text-align: center; color: var(--muted); padding: 80px 0; font-size: 32px; }
+/* Telefon číšníka: menší písmo a stav smí zalomit, jinak tabulka přeteče doprava. */
+@media (max-width: 600px) {
+  .floor td { padding: 12px 12px; }
+  .floor td:first-child { font-size: 40px; }
+  .floor td:last-child { white-space: normal; }
+  .floor .items { font-size: 16px; }
+  .floor .eta { font-size: 26px; white-space: nowrap; }
+  .floor .state, .floor tr.ready .state { font-size: 16px; }
+}
 
 /* titulek poslední hlášky */
 .caption {
