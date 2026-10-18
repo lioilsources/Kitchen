@@ -70,10 +70,11 @@ type shownETA struct {
 }
 
 func New(cfg *config.Config, st EventStore, learner *eta.Learner, voice Voice) (*Engine, error) {
-	return newWithClock(cfg, st, learner, voice, time.Now)
+	return NewWithClock(cfg, st, learner, voice, time.Now)
 }
 
-func newWithClock(cfg *config.Config, st EventStore, learner *eta.Learner, voice Voice, now func() time.Time) (*Engine, error) {
+// NewWithClock is New with an injectable clock (tests, scenario replays in tools/scenarios).
+func NewWithClock(cfg *config.Config, st EventStore, learner *eta.Learner, voice Voice, now func() time.Time) (*Engine, error) {
 	e := &Engine{
 		cfg: cfg, menu: cfg.MenuBySKU(), stations: map[string]model.Station{},
 		store: st, learner: learner, voice: voice, settings: cfg.Settings, now: now,
@@ -288,7 +289,7 @@ func (e *Engine) announceItems(table string, items []*model.Item, status model.S
 		mods = mods || len(it.Mods) > 0
 	}
 	if len(lines) > 0 {
-		e.voice.Say(tts.Announcement{Kind: kind, Table: table, Text: tts.NewOrder(table, lines, mods)})
+		e.say(tts.Announcement{Kind: kind, Table: table, Text: tts.NewOrder(table, lines, mods)})
 	}
 }
 
@@ -381,7 +382,7 @@ func (e *Engine) sideEffects(it *model.Item, to model.Status) {
 			}
 		}
 		if e.courseComplete(o, it.Course) {
-			e.voice.Say(tts.Announcement{Kind: tts.KindComplete, Table: o.Table, Text: tts.Complete(o.Table), Key: "complete:" + o.ID})
+			e.say(tts.Announcement{Kind: tts.KindComplete, Table: o.Table, Text: tts.Complete(o.Table), Key: "complete:" + o.ID})
 		}
 	}
 }
@@ -490,7 +491,7 @@ func (e *Engine) fire(o *model.Order, by string) (int, error) {
 			fired = append(fired, it)
 		}
 	}
-	e.voice.Say(tts.Announcement{Kind: tts.KindFire, Table: o.Table, Text: tts.Fire(o.Table, e.cfg.CourseNames[c]), Key: "fire:" + o.ID})
+	e.say(tts.Announcement{Kind: tts.KindFire, Table: o.Table, Text: tts.Fire(o.Table, e.cfg.CourseNames[c]), Key: "fire:" + o.ID})
 	return len(fired), nil
 }
 
@@ -580,4 +581,10 @@ func fold(s string) string {
 var diacritics = map[rune]rune{
 	'á': 'a', 'č': 'c', 'ď': 'd', 'é': 'e', 'ě': 'e', 'í': 'i', 'ň': 'n', 'ó': 'o',
 	'ř': 'r', 'š': 's', 'ť': 't', 'ú': 'u', 'ů': 'u', 'ý': 'y', 'ž': 'z', 'ä': 'a', 'ö': 'o', 'ü': 'u',
+}
+
+// say stamps an announcement with the engine clock before queueing it.
+func (e *Engine) say(a tts.Announcement) {
+	a.TS = e.now()
+	e.voice.Say(a)
 }

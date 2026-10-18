@@ -82,7 +82,7 @@ func (h *harness) open() {
 		h.t.Fatal(err)
 	}
 	h.v = &fakeVoice{}
-	e, err := newWithClock(h.cfg, st, l, h.v, func() time.Time { return h.now })
+	e, err := NewWithClock(h.cfg, st, l, h.v, func() time.Time { return h.now })
 	if err != nil {
 		h.t.Fatal(err)
 	}

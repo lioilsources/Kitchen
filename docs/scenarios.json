@@ -1,0 +1,1220 @@
+[
+ {
+  "id": "empty",
+  "title": "Prázdná fronta",
+  "snapshot": {
+   "now": "2026-10-17T15:07:40+02:00",
+   "quiet": false,
+   "stations": [
+    {
+     "id": "gril",
+     "name": "Gril"
+    },
+    {
+     "id": "teple",
+     "name": "Teplá"
+    },
+    {
+     "id": "studena",
+     "name": "Studená"
+    },
+    {
+     "id": "dezert",
+     "name": "Dezerty"
+    }
+   ],
+   "items": [],
+   "tables": []
+  },
+  "voice": []
+ },
+ {
+  "id": "few",
+  "title": "Málo objednávek",
+  "snapshot": {
+   "now": "2026-10-17T17:54:20+02:00",
+   "quiet": false,
+   "stations": [
+    {
+     "id": "gril",
+     "name": "Gril"
+    },
+    {
+     "id": "teple",
+     "name": "Teplá"
+    },
+    {
+     "id": "studena",
+     "name": "Studená"
+    },
+    {
+     "id": "dezert",
+     "name": "Dezerty"
+    }
+   ],
+   "items": [
+    {
+     "id": "it_f5ab8efd9ac5",
+     "order_id": "or_793443065b44",
+     "table": "4",
+     "sku": "svickova",
+     "name": "Svíčková",
+     "qty": 2,
+     "mods": [],
+     "note": "",
+     "station": "teple",
+     "course": 2,
+     "status": "CLAIMED",
+     "claimed_by": "teple",
+     "created_at": "2026-10-17T17:45:00+02:00",
+     "claimed_at": "2026-10-17T17:45:30+02:00",
+     "ready_at": null,
+     "wait_s": 530,
+     "eta_min": 0,
+     "start_in_min": 0,
+     "alert": "none"
+    },
+    {
+     "id": "it_353863b38af3",
+     "order_id": "or_793443065b44",
+     "table": "4",
+     "sku": "rizek",
+     "name": "Řízek",
+     "qty": 1,
+     "mods": [],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "CLAIMED",
+     "claimed_by": "gril",
+     "created_at": "2026-10-17T17:45:00+02:00",
+     "claimed_at": "2026-10-17T17:45:30+02:00",
+     "ready_at": null,
+     "wait_s": 530,
+     "eta_min": 1,
+     "start_in_min": 0,
+     "alert": "none"
+    },
+    {
+     "id": "it_782242470c79",
+     "order_id": "or_5eb8c8807ef7",
+     "table": "2",
+     "sku": "salat",
+     "name": "Caesar salát",
+     "qty": 1,
+     "mods": [],
+     "note": "",
+     "station": "studena",
+     "course": 1,
+     "status": "READY",
+     "claimed_by": "studena",
+     "created_at": "2026-10-17T17:48:30+02:00",
+     "claimed_at": "2026-10-17T17:48:50+02:00",
+     "ready_at": "2026-10-17T17:52:50+02:00",
+     "wait_s": 90,
+     "eta_min": 0,
+     "start_in_min": 0,
+     "alert": "none"
+    },
+    {
+     "id": "it_06367c421d74",
+     "order_id": "or_5eb8c8807ef7",
+     "table": "2",
+     "sku": "tatarak",
+     "name": "Tatarák",
+     "qty": 1,
+     "mods": [
+      "bez cibule"
+     ],
+     "note": "",
+     "station": "studena",
+     "course": 1,
+     "status": "READY",
+     "claimed_by": "studena",
+     "created_at": "2026-10-17T17:48:30+02:00",
+     "claimed_at": "2026-10-17T17:48:50+02:00",
+     "ready_at": "2026-10-17T17:52:50+02:00",
+     "wait_s": 90,
+     "eta_min": 0,
+     "start_in_min": 0,
+     "alert": "none"
+    },
+    {
+     "id": "it_3d1d230ef4e3",
+     "order_id": "or_45098072d783",
+     "table": "9",
+     "sku": "burger",
+     "name": "Burger",
+     "qty": 2,
+     "mods": [
+      "medium"
+     ],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "NEW",
+     "claimed_by": "",
+     "created_at": "2026-10-17T17:53:40+02:00",
+     "claimed_at": null,
+     "ready_at": null,
+     "wait_s": 40,
+     "eta_min": 12,
+     "start_in_min": 0,
+     "alert": "none"
+    },
+    {
+     "id": "it_a9cd7776c8a5",
+     "order_id": "or_45098072d783",
+     "table": "9",
+     "sku": "hranolky",
+     "name": "Hranolky",
+     "qty": 2,
+     "mods": [],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "NEW",
+     "claimed_by": "",
+     "created_at": "2026-10-17T17:53:40+02:00",
+     "claimed_at": null,
+     "ready_at": null,
+     "wait_s": 40,
+     "eta_min": 8,
+     "start_in_min": 3,
+     "alert": "none"
+    },
+    {
+     "id": "it_08a2bfe009c1",
+     "order_id": "or_45098072d783",
+     "table": "9",
+     "sku": "tiramisu",
+     "name": "Tiramisu",
+     "qty": 2,
+     "mods": [],
+     "note": "",
+     "station": "dezert",
+     "course": 3,
+     "status": "HOLD",
+     "claimed_by": "",
+     "created_at": "2026-10-17T17:53:40+02:00",
+     "claimed_at": null,
+     "ready_at": null,
+     "wait_s": 40,
+     "eta_min": 2,
+     "start_in_min": 0,
+     "alert": "none"
+    }
+   ],
+   "tables": [
+    {
+     "table": "2",
+     "status": "ready",
+     "eta_min": 0,
+     "course": 1,
+     "items_total": 2,
+     "items_ready": 2,
+     "ready_wait_s": 90,
+     "alert": "none",
+     "items": [
+      {
+       "name": "Caesar salát",
+       "qty": 1,
+       "status": "READY"
+      },
+      {
+       "name": "Tatarák",
+       "qty": 1,
+       "status": "READY"
+      }
+     ]
+    },
+    {
+     "table": "4",
+     "status": "cooking",
+     "eta_min": 1,
+     "course": 2,
+     "items_total": 2,
+     "items_ready": 0,
+     "ready_wait_s": 0,
+     "alert": "none",
+     "items": [
+      {
+       "name": "Svíčková",
+       "qty": 2,
+       "status": "CLAIMED"
+      },
+      {
+       "name": "Řízek",
+       "qty": 1,
+       "status": "CLAIMED"
+      }
+     ]
+    },
+    {
+     "table": "9",
+     "status": "waiting",
+     "eta_min": 12,
+     "course": 2,
+     "items_total": 2,
+     "items_ready": 0,
+     "ready_wait_s": 0,
+     "alert": "none",
+     "items": [
+      {
+       "name": "Burger",
+       "qty": 2,
+       "status": "NEW"
+      },
+      {
+       "name": "Hranolky",
+       "qty": 2,
+       "status": "NEW"
+      }
+     ]
+    }
+   ]
+  },
+  "voice": [
+   {
+    "kind": "new_order",
+    "text": "Stůl čtyři: dvě svíčkové, jeden řízek.",
+    "table": "4",
+    "ts": "2026-10-17T17:45:00+02:00"
+   },
+   {
+    "kind": "new_order",
+    "text": "Stůl dva: jeden caesar salát, jeden tatarák, s úpravou.",
+    "table": "2",
+    "ts": "2026-10-17T17:48:30+02:00"
+   },
+   {
+    "kind": "complete",
+    "text": "Stůl dva, kompletní.",
+    "table": "2",
+    "ts": "2026-10-17T17:52:50+02:00"
+   },
+   {
+    "kind": "new_order",
+    "text": "Stůl devět: dva burgery, dvě porce hranolek, s úpravou.",
+    "table": "9",
+    "ts": "2026-10-17T17:53:40+02:00"
+   }
+  ]
+ },
+ {
+  "id": "rush",
+  "title": "Nestíháme!",
+  "snapshot": {
+   "now": "2026-10-17T19:30:40+02:00",
+   "quiet": false,
+   "stations": [
+    {
+     "id": "gril",
+     "name": "Gril"
+    },
+    {
+     "id": "teple",
+     "name": "Teplá"
+    },
+    {
+     "id": "studena",
+     "name": "Studená"
+    },
+    {
+     "id": "dezert",
+     "name": "Dezerty"
+    }
+   ],
+   "items": [
+    {
+     "id": "it_b19db341c5b3",
+     "order_id": "or_b31a7624d84a",
+     "table": "1",
+     "sku": "steak",
+     "name": "Hovězí steak",
+     "qty": 2,
+     "mods": [
+      "medium rare"
+     ],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "CLAIMED",
+     "claimed_by": "gril",
+     "created_at": "2026-10-17T19:10:00+02:00",
+     "claimed_at": "2026-10-17T19:20:10+02:00",
+     "ready_at": null,
+     "wait_s": 630,
+     "eta_min": 4,
+     "start_in_min": 0,
+     "alert": "none"
+    },
+    {
+     "id": "it_a4b8cb831b0e",
+     "order_id": "or_b31a7624d84a",
+     "table": "1",
+     "sku": "hranolky",
+     "name": "Hranolky",
+     "qty": 2,
+     "mods": [],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "CLAIMED",
+     "claimed_by": "gril",
+     "created_at": "2026-10-17T19:10:00+02:00",
+     "claimed_at": "2026-10-17T19:20:10+02:00",
+     "ready_at": null,
+     "wait_s": 630,
+     "eta_min": 0,
+     "start_in_min": 0,
+     "alert": "late"
+    },
+    {
+     "id": "it_b84fd8eaf6ed",
+     "order_id": "or_b18d9d42335d",
+     "table": "3",
+     "sku": "burger",
+     "name": "Burger",
+     "qty": 3,
+     "mods": [],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "READY",
+     "claimed_by": "gril",
+     "created_at": "2026-10-17T19:11:10+02:00",
+     "claimed_at": "2026-10-17T19:20:10+02:00",
+     "ready_at": "2026-10-17T19:25:10+02:00",
+     "wait_s": 330,
+     "eta_min": 0,
+     "start_in_min": 0,
+     "alert": "warn"
+    },
+    {
+     "id": "it_2cde16e3b19a",
+     "order_id": "or_b18d9d42335d",
+     "table": "3",
+     "sku": "hranolky",
+     "name": "Hranolky",
+     "qty": 3,
+     "mods": [],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "READY",
+     "claimed_by": "gril",
+     "created_at": "2026-10-17T19:11:10+02:00",
+     "claimed_at": "2026-10-17T19:20:10+02:00",
+     "ready_at": "2026-10-17T19:25:10+02:00",
+     "wait_s": 330,
+     "eta_min": 0,
+     "start_in_min": 0,
+     "alert": "warn"
+    },
+    {
+     "id": "it_7c4a349fb211",
+     "order_id": "or_5d2d3284e7bb",
+     "table": "6",
+     "sku": "rizek",
+     "name": "Řízek",
+     "qty": 4,
+     "mods": [],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "CLAIMED",
+     "claimed_by": "gril",
+     "created_at": "2026-10-17T19:12:20+02:00",
+     "claimed_at": "2026-10-17T19:20:10+02:00",
+     "ready_at": null,
+     "wait_s": 630,
+     "eta_min": 0,
+     "start_in_min": 0,
+     "alert": "none"
+    },
+    {
+     "id": "it_c1780c5328bb",
+     "order_id": "or_5d2d3284e7bb",
+     "table": "6",
+     "sku": "svickova",
+     "name": "Svíčková",
+     "qty": 2,
+     "mods": [],
+     "note": "",
+     "station": "teple",
+     "course": 2,
+     "status": "READY",
+     "claimed_by": "teple",
+     "created_at": "2026-10-17T19:12:20+02:00",
+     "claimed_at": "2026-10-17T19:20:10+02:00",
+     "ready_at": "2026-10-17T19:22:10+02:00",
+     "wait_s": 510,
+     "eta_min": 0,
+     "start_in_min": 0,
+     "alert": "late"
+    },
+    {
+     "id": "it_d1bd9a6c6f93",
+     "order_id": "or_343bca9d94a7",
+     "table": "8",
+     "sku": "steak",
+     "name": "Hovězí steak",
+     "qty": 1,
+     "mods": [],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "CLAIMED",
+     "claimed_by": "gril",
+     "created_at": "2026-10-17T19:13:30+02:00",
+     "claimed_at": "2026-10-17T19:25:10+02:00",
+     "ready_at": null,
+     "wait_s": 330,
+     "eta_min": 9,
+     "start_in_min": 0,
+     "alert": "none"
+    },
+    {
+     "id": "it_db5788178e13",
+     "order_id": "or_343bca9d94a7",
+     "table": "8",
+     "sku": "burger",
+     "name": "Burger",
+     "qty": 2,
+     "mods": [
+      "bez cibule"
+     ],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "NEW",
+     "claimed_by": "",
+     "created_at": "2026-10-17T19:13:30+02:00",
+     "claimed_at": null,
+     "ready_at": null,
+     "wait_s": 1030,
+     "eta_min": 14,
+     "start_in_min": 0,
+     "alert": "warn"
+    },
+    {
+     "id": "it_115cd75ab696",
+     "order_id": "or_804adb81a15e",
+     "table": "11",
+     "sku": "svickova",
+     "name": "Svíčková",
+     "qty": 3,
+     "mods": [],
+     "note": "",
+     "station": "teple",
+     "course": 2,
+     "status": "READY",
+     "claimed_by": "teple",
+     "created_at": "2026-10-17T19:14:40+02:00",
+     "claimed_at": "2026-10-17T19:20:10+02:00",
+     "ready_at": "2026-10-17T19:25:10+02:00",
+     "wait_s": 330,
+     "eta_min": 0,
+     "start_in_min": 0,
+     "alert": "warn"
+    },
+    {
+     "id": "it_fa6d170b36d9",
+     "order_id": "or_804adb81a15e",
+     "table": "11",
+     "sku": "rizek",
+     "name": "Řízek",
+     "qty": 1,
+     "mods": [
+      "bez omáčky"
+     ],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "CLAIMED",
+     "claimed_by": "gril",
+     "created_at": "2026-10-17T19:14:40+02:00",
+     "claimed_at": "2026-10-17T19:20:10+02:00",
+     "ready_at": null,
+     "wait_s": 630,
+     "eta_min": 0,
+     "start_in_min": 0,
+     "alert": "none"
+    },
+    {
+     "id": "it_1f1fdd4118d0",
+     "order_id": "or_73e1b7a94cb8",
+     "table": "12",
+     "sku": "rizek",
+     "name": "Řízek",
+     "qty": 2,
+     "mods": [],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "NEW",
+     "claimed_by": "",
+     "created_at": "2026-10-17T19:15:50+02:00",
+     "claimed_at": null,
+     "ready_at": null,
+     "wait_s": 890,
+     "eta_min": 15,
+     "start_in_min": 0,
+     "alert": "warn"
+    },
+    {
+     "id": "it_959655aa78e0",
+     "order_id": "or_73e1b7a94cb8",
+     "table": "12",
+     "sku": "hranolky",
+     "name": "Hranolky",
+     "qty": 1,
+     "mods": [],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "NEW",
+     "claimed_by": "",
+     "created_at": "2026-10-17T19:15:50+02:00",
+     "claimed_at": null,
+     "ready_at": null,
+     "wait_s": 890,
+     "eta_min": 13,
+     "start_in_min": 1,
+     "alert": "warn"
+    },
+    {
+     "id": "it_bf98ec8ee138",
+     "order_id": "or_8319bfe3c47c",
+     "table": "14",
+     "sku": "tatarak",
+     "name": "Tatarák",
+     "qty": 2,
+     "mods": [],
+     "note": "",
+     "station": "studena",
+     "course": 1,
+     "status": "READY",
+     "claimed_by": "studena",
+     "created_at": "2026-10-17T19:17:00+02:00",
+     "claimed_at": "2026-10-17T19:20:10+02:00",
+     "ready_at": "2026-10-17T19:22:10+02:00",
+     "wait_s": 510,
+     "eta_min": 0,
+     "start_in_min": 0,
+     "alert": "late"
+    },
+    {
+     "id": "it_2134bfca1117",
+     "order_id": "or_8319bfe3c47c",
+     "table": "14",
+     "sku": "salat",
+     "name": "Caesar salát",
+     "qty": 2,
+     "mods": [],
+     "note": "",
+     "station": "studena",
+     "course": 1,
+     "status": "READY",
+     "claimed_by": "studena",
+     "created_at": "2026-10-17T19:17:00+02:00",
+     "claimed_at": "2026-10-17T19:20:10+02:00",
+     "ready_at": "2026-10-17T19:22:10+02:00",
+     "wait_s": 510,
+     "eta_min": 0,
+     "start_in_min": 0,
+     "alert": "late"
+    },
+    {
+     "id": "it_224763bda51d",
+     "order_id": "or_5495b10c3450",
+     "table": "15",
+     "sku": "burger",
+     "name": "Burger",
+     "qty": 4,
+     "mods": [],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "NEW",
+     "claimed_by": "",
+     "created_at": "2026-10-17T19:18:10+02:00",
+     "claimed_at": null,
+     "ready_at": null,
+     "wait_s": 750,
+     "eta_min": 21,
+     "start_in_min": 5,
+     "alert": "warn"
+    },
+    {
+     "id": "it_2128d96579cd",
+     "order_id": "or_5495b10c3450",
+     "table": "15",
+     "sku": "steak",
+     "name": "Hovězí steak",
+     "qty": 2,
+     "mods": [
+      "well done"
+     ],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "NEW",
+     "claimed_by": "",
+     "created_at": "2026-10-17T19:18:10+02:00",
+     "claimed_at": null,
+     "ready_at": null,
+     "wait_s": 750,
+     "eta_min": 26,
+     "start_in_min": 0,
+     "alert": "warn"
+    },
+    {
+     "id": "it_a9608cc0a2a1",
+     "order_id": "or_376cd1f5e1a8",
+     "table": "17",
+     "sku": "svickova",
+     "name": "Svíčková",
+     "qty": 2,
+     "mods": [],
+     "note": "",
+     "station": "teple",
+     "course": 2,
+     "status": "NEW",
+     "claimed_by": "",
+     "created_at": "2026-10-17T19:18:40+02:00",
+     "claimed_at": null,
+     "ready_at": null,
+     "wait_s": 720,
+     "eta_min": 6,
+     "start_in_min": 18,
+     "alert": "warn"
+    },
+    {
+     "id": "it_a59042306acc",
+     "order_id": "or_376cd1f5e1a8",
+     "table": "17",
+     "sku": "rizek",
+     "name": "Řízek",
+     "qty": 2,
+     "mods": [],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "NEW",
+     "claimed_by": "",
+     "created_at": "2026-10-17T19:18:40+02:00",
+     "claimed_at": null,
+     "ready_at": null,
+     "wait_s": 720,
+     "eta_min": 25,
+     "start_in_min": 0,
+     "alert": "warn"
+    },
+    {
+     "id": "it_7983fc19b692",
+     "order_id": "or_91e384654e05",
+     "table": "20",
+     "sku": "steak",
+     "name": "Hovězí steak",
+     "qty": 3,
+     "mods": [],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "NEW",
+     "claimed_by": "",
+     "created_at": "2026-10-17T19:19:10+02:00",
+     "claimed_at": null,
+     "ready_at": null,
+     "wait_s": 690,
+     "eta_min": 32,
+     "start_in_min": 0,
+     "alert": "warn"
+    },
+    {
+     "id": "it_31e972145542",
+     "order_id": "or_a0de202cd88e",
+     "table": "bar 2",
+     "sku": "burger",
+     "name": "Burger",
+     "qty": 1,
+     "mods": [],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "NEW",
+     "claimed_by": "",
+     "created_at": "2026-10-17T19:19:40+02:00",
+     "claimed_at": null,
+     "ready_at": null,
+     "wait_s": 660,
+     "eta_min": 33,
+     "start_in_min": 0,
+     "alert": "warn"
+    },
+    {
+     "id": "it_913812f54f03",
+     "order_id": "or_a0de202cd88e",
+     "table": "bar 2",
+     "sku": "hranolky",
+     "name": "Hranolky",
+     "qty": 1,
+     "mods": [],
+     "note": "",
+     "station": "gril",
+     "course": 2,
+     "status": "NEW",
+     "claimed_by": "",
+     "created_at": "2026-10-17T19:19:40+02:00",
+     "claimed_at": null,
+     "ready_at": null,
+     "wait_s": 660,
+     "eta_min": 29,
+     "start_in_min": 3,
+     "alert": "warn"
+    }
+   ],
+   "tables": [
+    {
+     "table": "14",
+     "status": "ready",
+     "eta_min": 0,
+     "course": 1,
+     "items_total": 2,
+     "items_ready": 2,
+     "ready_wait_s": 510,
+     "alert": "late",
+     "items": [
+      {
+       "name": "Tatarák",
+       "qty": 2,
+       "status": "READY"
+      },
+      {
+       "name": "Caesar salát",
+       "qty": 2,
+       "status": "READY"
+      }
+     ]
+    },
+    {
+     "table": "3",
+     "status": "ready",
+     "eta_min": 0,
+     "course": 2,
+     "items_total": 2,
+     "items_ready": 2,
+     "ready_wait_s": 330,
+     "alert": "warn",
+     "items": [
+      {
+       "name": "Burger",
+       "qty": 3,
+       "status": "READY"
+      },
+      {
+       "name": "Hranolky",
+       "qty": 3,
+       "status": "READY"
+      }
+     ]
+    },
+    {
+     "table": "6",
+     "status": "partial",
+     "eta_min": 0,
+     "course": 2,
+     "items_total": 2,
+     "items_ready": 1,
+     "ready_wait_s": 510,
+     "alert": "late",
+     "items": [
+      {
+       "name": "Řízek",
+       "qty": 4,
+       "status": "CLAIMED"
+      },
+      {
+       "name": "Svíčková",
+       "qty": 2,
+       "status": "READY"
+      }
+     ]
+    },
+    {
+     "table": "11",
+     "status": "partial",
+     "eta_min": 0,
+     "course": 2,
+     "items_total": 2,
+     "items_ready": 1,
+     "ready_wait_s": 330,
+     "alert": "warn",
+     "items": [
+      {
+       "name": "Svíčková",
+       "qty": 3,
+       "status": "READY"
+      },
+      {
+       "name": "Řízek",
+       "qty": 1,
+       "status": "CLAIMED"
+      }
+     ]
+    },
+    {
+     "table": "1",
+     "status": "cooking",
+     "eta_min": 4,
+     "course": 2,
+     "items_total": 2,
+     "items_ready": 0,
+     "ready_wait_s": 0,
+     "alert": "none",
+     "items": [
+      {
+       "name": "Hovězí steak",
+       "qty": 2,
+       "status": "CLAIMED"
+      },
+      {
+       "name": "Hranolky",
+       "qty": 2,
+       "status": "CLAIMED"
+      }
+     ]
+    },
+    {
+     "table": "8",
+     "status": "cooking",
+     "eta_min": 14,
+     "course": 2,
+     "items_total": 2,
+     "items_ready": 0,
+     "ready_wait_s": 0,
+     "alert": "none",
+     "items": [
+      {
+       "name": "Hovězí steak",
+       "qty": 1,
+       "status": "CLAIMED"
+      },
+      {
+       "name": "Burger",
+       "qty": 2,
+       "status": "NEW"
+      }
+     ]
+    },
+    {
+     "table": "12",
+     "status": "waiting",
+     "eta_min": 15,
+     "course": 2,
+     "items_total": 2,
+     "items_ready": 0,
+     "ready_wait_s": 0,
+     "alert": "none",
+     "items": [
+      {
+       "name": "Řízek",
+       "qty": 2,
+       "status": "NEW"
+      },
+      {
+       "name": "Hranolky",
+       "qty": 1,
+       "status": "NEW"
+      }
+     ]
+    },
+    {
+     "table": "17",
+     "status": "waiting",
+     "eta_min": 25,
+     "course": 2,
+     "items_total": 2,
+     "items_ready": 0,
+     "ready_wait_s": 0,
+     "alert": "none",
+     "items": [
+      {
+       "name": "Svíčková",
+       "qty": 2,
+       "status": "NEW"
+      },
+      {
+       "name": "Řízek",
+       "qty": 2,
+       "status": "NEW"
+      }
+     ]
+    },
+    {
+     "table": "15",
+     "status": "waiting",
+     "eta_min": 26,
+     "course": 2,
+     "items_total": 2,
+     "items_ready": 0,
+     "ready_wait_s": 0,
+     "alert": "none",
+     "items": [
+      {
+       "name": "Burger",
+       "qty": 4,
+       "status": "NEW"
+      },
+      {
+       "name": "Hovězí steak",
+       "qty": 2,
+       "status": "NEW"
+      }
+     ]
+    },
+    {
+     "table": "20",
+     "status": "waiting",
+     "eta_min": 32,
+     "course": 2,
+     "items_total": 1,
+     "items_ready": 0,
+     "ready_wait_s": 0,
+     "alert": "none",
+     "items": [
+      {
+       "name": "Hovězí steak",
+       "qty": 3,
+       "status": "NEW"
+      }
+     ]
+    },
+    {
+     "table": "bar 2",
+     "status": "waiting",
+     "eta_min": 33,
+     "course": 2,
+     "items_total": 2,
+     "items_ready": 0,
+     "ready_wait_s": 0,
+     "alert": "none",
+     "items": [
+      {
+       "name": "Burger",
+       "qty": 1,
+       "status": "NEW"
+      },
+      {
+       "name": "Hranolky",
+       "qty": 1,
+       "status": "NEW"
+      }
+     ]
+    }
+   ]
+  },
+  "voice": [
+   {
+    "kind": "new_order",
+    "text": "Stůl jedna: dva steaky, dvě porce hranolek, s úpravou.",
+    "table": "1",
+    "ts": "2026-10-17T19:10:00+02:00"
+   },
+   {
+    "kind": "new_order",
+    "text": "Stůl tři: tři burgery, tři porce hranolek.",
+    "table": "3",
+    "ts": "2026-10-17T19:11:10+02:00"
+   },
+   {
+    "kind": "wait_claim",
+    "text": "Stůl jedna, gril, čeká na kuchaře.",
+    "table": "1",
+    "ts": "2026-10-17T19:12:00+02:00"
+   },
+   {
+    "kind": "new_order",
+    "text": "Stůl šest: čtyři řízky, dvě svíčkové.",
+    "table": "6",
+    "ts": "2026-10-17T19:12:20+02:00"
+   },
+   {
+    "kind": "wait_claim",
+    "text": "Stůl tři, gril, čeká na kuchaře.",
+    "table": "3",
+    "ts": "2026-10-17T19:13:10+02:00"
+   },
+   {
+    "kind": "new_order",
+    "text": "Stůl osm: jeden steak, dva burgery, s úpravou.",
+    "table": "8",
+    "ts": "2026-10-17T19:13:30+02:00"
+   },
+   {
+    "kind": "wait_claim",
+    "text": "Stůl šest, gril, čeká na kuchaře.",
+    "table": "6",
+    "ts": "2026-10-17T19:14:20+02:00"
+   },
+   {
+    "kind": "wait_claim",
+    "text": "Stůl šest, teplá, čeká na kuchaře.",
+    "table": "6",
+    "ts": "2026-10-17T19:14:20+02:00"
+   },
+   {
+    "kind": "new_order",
+    "text": "Stůl jedenáct: tři svíčkové, jeden řízek, s úpravou.",
+    "table": "11",
+    "ts": "2026-10-17T19:14:40+02:00"
+   },
+   {
+    "kind": "wait_claim",
+    "text": "Stůl osm, gril, čeká na kuchaře.",
+    "table": "8",
+    "ts": "2026-10-17T19:15:30+02:00"
+   },
+   {
+    "kind": "new_order",
+    "text": "Stůl dvanáct: dva řízky, jedna porce hranolek.",
+    "table": "12",
+    "ts": "2026-10-17T19:15:50+02:00"
+   },
+   {
+    "kind": "wait_claim",
+    "text": "Stůl jedenáct, teplá, čeká na kuchaře.",
+    "table": "11",
+    "ts": "2026-10-17T19:16:40+02:00"
+   },
+   {
+    "kind": "wait_claim",
+    "text": "Stůl jedenáct, gril, čeká na kuchaře.",
+    "table": "11",
+    "ts": "2026-10-17T19:16:40+02:00"
+   },
+   {
+    "kind": "new_order",
+    "text": "Stůl čtrnáct: dva tataráky, dva caesar saláty.",
+    "table": "14",
+    "ts": "2026-10-17T19:17:00+02:00"
+   },
+   {
+    "kind": "wait_claim",
+    "text": "Stůl dvanáct, gril, čeká na kuchaře.",
+    "table": "12",
+    "ts": "2026-10-17T19:17:50+02:00"
+   },
+   {
+    "kind": "new_order",
+    "text": "Stůl patnáct: čtyři burgery, dva steaky, s úpravou.",
+    "table": "15",
+    "ts": "2026-10-17T19:18:10+02:00"
+   },
+   {
+    "kind": "new_order",
+    "text": "Stůl sedmnáct: dvě svíčkové, dva řízky.",
+    "table": "17",
+    "ts": "2026-10-17T19:18:40+02:00"
+   },
+   {
+    "kind": "wait_claim",
+    "text": "Stůl čtrnáct, studená, čeká na kuchaře.",
+    "table": "14",
+    "ts": "2026-10-17T19:19:00+02:00"
+   },
+   {
+    "kind": "new_order",
+    "text": "Stůl dvacet: tři steaky.",
+    "table": "20",
+    "ts": "2026-10-17T19:19:10+02:00"
+   },
+   {
+    "kind": "new_order",
+    "text": "Stůl bar dva: jeden burger, jedna porce hranolek.",
+    "table": "bar 2",
+    "ts": "2026-10-17T19:19:40+02:00"
+   },
+   {
+    "kind": "wait_claim",
+    "text": "Stůl patnáct, gril, čeká na kuchaře.",
+    "table": "15",
+    "ts": "2026-10-17T19:20:10+02:00"
+   },
+   {
+    "kind": "wait_claim",
+    "text": "Stůl sedmnáct, teplá, čeká na kuchaře.",
+    "table": "17",
+    "ts": "2026-10-17T19:20:40+02:00"
+   },
+   {
+    "kind": "wait_claim",
+    "text": "Stůl sedmnáct, gril, čeká na kuchaře.",
+    "table": "17",
+    "ts": "2026-10-17T19:20:40+02:00"
+   },
+   {
+    "kind": "wait_claim",
+    "text": "Stůl dvacet, gril, čeká na kuchaře.",
+    "table": "20",
+    "ts": "2026-10-17T19:21:10+02:00"
+   },
+   {
+    "kind": "wait_claim",
+    "text": "Stůl bar dva, gril, čeká na kuchaře.",
+    "table": "bar 2",
+    "ts": "2026-10-17T19:21:40+02:00"
+   },
+   {
+    "kind": "complete",
+    "text": "Stůl čtrnáct, kompletní.",
+    "table": "14",
+    "ts": "2026-10-17T19:22:10+02:00"
+   },
+   {
+    "kind": "pass_aging",
+    "text": "Stůl šest hotovo, na předávce tři minuty.",
+    "table": "6",
+    "ts": "2026-10-17T19:25:10+02:00"
+   },
+   {
+    "kind": "pass_aging",
+    "text": "Stůl čtrnáct hotovo, na předávce tři minuty.",
+    "table": "14",
+    "ts": "2026-10-17T19:25:10+02:00"
+   },
+   {
+    "kind": "complete",
+    "text": "Stůl tři, kompletní.",
+    "table": "3",
+    "ts": "2026-10-17T19:25:10+02:00"
+   },
+   {
+    "kind": "pass_aging",
+    "text": "Stůl tři hotovo, na předávce tři minuty.",
+    "table": "3",
+    "ts": "2026-10-17T19:28:10+02:00"
+   },
+   {
+    "kind": "pass_aging",
+    "text": "Stůl šest hotovo, na předávce šest minut.",
+    "table": "6",
+    "ts": "2026-10-17T19:28:10+02:00"
+   },
+   {
+    "kind": "pass_aging",
+    "text": "Stůl jedenáct hotovo, na předávce tři minuty.",
+    "table": "11",
+    "ts": "2026-10-17T19:28:10+02:00"
+   },
+   {
+    "kind": "pass_aging",
+    "text": "Stůl čtrnáct hotovo, na předávce šest minut.",
+    "table": "14",
+    "ts": "2026-10-17T19:28:10+02:00"
+   }
+  ]
+ }
+]

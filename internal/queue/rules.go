@@ -44,7 +44,7 @@ func (e *Engine) Tick() bool {
 			key := "claim:" + o.ID + ":" + it.Station
 			if _, done := e.alerted[key]; !done {
 				e.alerted[key] = now
-				e.voice.Say(tts.Announcement{Kind: tts.KindWaitClaim, Table: o.Table, Key: key,
+				e.say(tts.Announcement{Kind: tts.KindWaitClaim, Table: o.Table, Key: key,
 					Text: tts.WaitClaim(o.Table, e.stations[it.Station].Name)})
 			}
 		}
@@ -77,7 +77,7 @@ func (e *Engine) Tick() bool {
 			continue
 		}
 		e.alerted[key] = now
-		e.voice.Say(tts.Announcement{Kind: tts.KindPassAging, Table: o.Table, Key: key,
+		e.say(tts.Announcement{Kind: tts.KindPassAging, Table: o.Table, Key: key,
 			Text: tts.PassAging(o.Table, int(wait/time.Minute))})
 	}
 
