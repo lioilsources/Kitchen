@@ -1,0 +1,121 @@
+# Předávka — ukázková konfigurace. Zkopíruj do config.yaml a uprav.
+listen: ":8080"
+data_file: "predavka.db"
+
+stations:
+  - {id: gril,    name: Gril,     parallelism: 4}   # kolik položek stanice zvládne naráz
+  - {id: teple,   name: Teplá,    parallelism: 3}
+  - {id: studena, name: Studená,  parallelism: 2}
+  - {id: dezert,  name: Dezerty,  parallelism: 2}
+
+# Jak se chod jmenuje v hlášce "Stůl sedm, připravit hlavní."
+course_names: {1: předkrm, 2: hlavní, 3: dezert}
+
+# Menu: SKU z pokladny → stanice + odhad šéfkuchaře (prep = p50, prep_p90 volitelně).
+# aliases = jak se položka jmenuje na bonu (ESC/POS), say = české tvary pro hlas (1 / 2–4 / 5+).
+menu:
+  - sku: polevka-dne
+    name: Polévka dne
+    station: teple
+    prep: 2m
+    course: 1
+    aliases: [polévka, polevka]
+    say: {one: polévka, few: polévky, many: polévek, gender: f}
+  - sku: tatarak
+    name: Tatarák
+    station: studena
+    prep: 6m
+    course: 1
+    say: {one: tatarák, few: tataráky, many: tataráků, gender: m}
+  - sku: salat
+    name: Caesar salát
+    station: studena
+    prep: 5m
+    course: 1
+    aliases: [caesar, salát caesar]
+    say: {one: caesar salát, few: caesar saláty, many: caesar salátů, gender: m}
+  - sku: svickova
+    name: Svíčková
+    station: teple
+    prep: 6m
+    prep_p90: 9m
+    course: 2
+    aliases: [svíčková na smetaně, svickova]
+    say: {one: svíčková, few: svíčkové, many: svíčkových, gender: f}
+  - sku: rizek
+    name: Řízek
+    station: gril
+    prep: 9m
+    course: 2
+    aliases: [smažený řízek, vepřový řízek, rizek]
+    say: {one: řízek, few: řízky, many: řízků, gender: m}
+  - sku: steak
+    name: Hovězí steak
+    station: gril
+    prep: 14m
+    prep_p90: 20m
+    course: 2
+    aliases: [steak, rib eye]
+    say: {one: steak, few: steaky, many: steaků, gender: m}
+  - sku: burger
+    name: Burger
+    station: gril
+    prep: 11m
+    course: 2
+    say: {one: burger, few: burgery, many: burgerů, gender: m}
+  - sku: hranolky
+    name: Hranolky
+    station: gril
+    prep: 5m
+    course: 2
+    say: {one: porce hranolek, few: porce hranolek, many: porcí hranolek, gender: f}
+  - sku: palacinky
+    name: Palačinky
+    station: dezert
+    prep: 7m
+    course: 3
+    say: {one: porce palačinek, few: porce palačinek, many: porcí palačinek, gender: f}
+  - sku: tiramisu
+    name: Tiramisu
+    station: dezert
+    prep: 2m
+    course: 3
+    say: {one: tiramisu, few: tiramisu, many: tiramisu, gender: n}
+
+settings:
+  wait_to_claim: 2m          # NEW → CLAIMED: hlas "Stůl 7, gril, čeká na kuchaře" (1×)
+  cook_overrun_factor: 1.2   # vaření > p90 × 1.2 → jen displej červeně
+  pass_aging: 3m             # READY → PICKED: hlas "Stůl 7 hotovo, na předávce 3 minuty"
+  reannounce_aging: 3m       # opakovat stárnutí (0 = jen jednou)
+  course_gap: 10m            # mezera mezi chody pro auto fire
+  auto_fire: true
+  announce_min_gap: 20s      # max 1 hláška / 20 s (urgence mají přednost)
+  eta_refresh: 30s           # ETA na place se mění max 1× za 30 s
+  quiet: false
+
+tts:
+  # engine: piperd (produkce: model v paměti, ~0,2 s) | piper (binárka pro každou větu, ~1 s navíc) | say (macOS) | none
+  engine: piperd
+  piper_python: /opt/predavka/venv/bin/python   # venv s `pip install piper-tts`
+  piperd_script: /opt/predavka/piperd.py        # deploy/piperd.py
+  piper_model: /opt/predavka/voices/cs_CZ-jirka-medium.onnx
+  # piper_bin: /opt/predavka/piper/piper        # jen pro engine: piper
+  # output: snapfifo (Snapcast → předávka + zřetězené repro v kuchyni) | play | none
+  output: snapfifo
+  snap_fifo: /tmp/snapfifo
+  # play_cmd: ["aplay", "-q"]    # pro output: play (Linux); macOS: ["afplay"]
+  tone_file: ""                  # krátký WAV při claimu (prázdné = bez tónu)
+
+escpos:
+  enabled: true
+  listen: ":9100"                # pokladna tiskne sem místo na tiskárnu
+  forward: "192.168.1.50:9100"   # skutečná kuchyňská tiskárna (prázdné = jen odposlech)
+  charset: cp852                 # cp852 | cp1250 | utf8 (ESC t n v datech má přednost)
+  # Regexy se dají přepsat per restaurace (výchozí viz internal/ingest/escpos/parse.go):
+  # table_re: '(?i)st[ůu]l\s*(?P<table>\d+)'
+  # item_re:  '^\s*(?P<qty>\d+)\s*x\s+(?P<name>.+)$'
+
+notify:
+  # Push na telefon/hodinky obsluhy, např. ntfy server na LAN: http://192.168.1.10:2586/predavka
+  webhook_url: ""
+  kinds: [pass_aging, complete]

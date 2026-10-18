@@ -1,0 +1,14 @@
+[Unit]
+Description=Předávka server
+After=network-online.target snapserver.service
+Wants=network-online.target
+
+[Service]
+User=predavka
+WorkingDirectory=/opt/predavka
+ExecStart=/opt/predavka/predavka-server -config /opt/predavka/config.yaml
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

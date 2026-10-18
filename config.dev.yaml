@@ -1,0 +1,22 @@
+# Vývoj na macOS: hlas přes `say` (Zuzana), ESC/POS proxy bez tiskárny.
+listen: ":8088"
+data_file: "dev.db"
+stations:
+  - {id: gril,    name: Gril,     parallelism: 4}
+  - {id: teple,   name: Teplá,    parallelism: 3}
+  - {id: studena, name: Studená,  parallelism: 2}
+  - {id: dezert,  name: Dezerty,  parallelism: 2}
+course_names: {1: předkrm, 2: hlavní, 3: dezert}
+menu:
+  - {sku: polevka-dne, name: Polévka dne, station: teple, prep: 2m, course: 1, aliases: [polévka], say: {one: polévka, few: polévky, many: polévek, gender: f}}
+  - {sku: tatarak, name: Tatarák, station: studena, prep: 6m, course: 1, say: {one: tatarák, few: tataráky, many: tataráků, gender: m}}
+  - {sku: salat, name: Caesar salát, station: studena, prep: 5m, course: 1, aliases: [caesar], say: {one: caesar salát, few: caesar saláty, many: caesar salátů, gender: m}}
+  - {sku: svickova, name: Svíčková, station: teple, prep: 6m, prep_p90: 9m, course: 2, aliases: [svíčková na smetaně], say: {one: svíčková, few: svíčkové, many: svíčkových, gender: f}}
+  - {sku: rizek, name: Řízek, station: gril, prep: 9m, course: 2, aliases: [smažený řízek], say: {one: řízek, few: řízky, many: řízků, gender: m}}
+  - {sku: steak, name: Hovězí steak, station: gril, prep: 14m, prep_p90: 20m, course: 2, aliases: [steak], say: {one: steak, few: steaky, many: steaků, gender: m}}
+  - {sku: burger, name: Burger, station: gril, prep: 11m, course: 2, say: {one: burger, few: burgery, many: burgerů, gender: m}}
+  - {sku: hranolky, name: Hranolky, station: gril, prep: 5m, course: 2, say: {one: porce hranolek, few: porce hranolek, many: porcí hranolek, gender: f}}
+  - {sku: palacinky, name: Palačinky, station: dezert, prep: 7m, course: 3, say: {one: porce palačinek, few: porce palačinek, many: porcí palačinek, gender: f}}
+  - {sku: tiramisu, name: Tiramisu, station: dezert, prep: 2m, course: 3, say: {one: tiramisu, few: tiramisu, many: tiramisu, gender: n}}
+tts: {engine: say, say_voice: Zuzana, output: play, play_cmd: [afplay]}
+escpos: {enabled: true, listen: ":9100", forward: "", charset: cp852}

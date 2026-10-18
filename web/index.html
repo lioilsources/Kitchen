@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Předávka</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="bar"><h1>Předávka</h1><span class="sp"></span><span class="dot"></span></header>
+<main style="max-width:720px">
+  <div class="links" id="links">
+    <a href="floor.html">Plac<small>Displej pro obsluhu: stůl, ETA, co vyzvednout. Bez ovládání.</small></a>
+    <a href="pass.html">Předávka (expo)<small>Sestavení stolů, vyzvednutí, fire dalšího chodu.</small></a>
+    <a href="tablet.html">Tablet obsluhy<small>Zadání objednávky.</small></a>
+    <a href="admin.html">Nastavení<small>Prahy, tichý režim, doby přípravy.</small></a>
+  </div>
+  <h2 class="muted" style="font-size:16px;font-weight:500">Kuchyňské stanice</h2>
+  <div class="links" id="stations"></div>
+</main>
+<div class="offline">Spojení se serverem ztraceno…</div>
+<script src="app.js"></script>
+<script>
+P.get("/api/state").then((s) => {
+  document.getElementById("stations").innerHTML = s.stations
+    .map((st) => `<a href="kitchen.html?station=${encodeURIComponent(st.id)}">${P.esc(st.name)}<small>Fronta stanice, claim tapnutím nebo bump barem.</small></a>`)
+    .join("");
+});
+P.connect(() => {});
+</script>
+</body>
+</html>

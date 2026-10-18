@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nastavení — Předávka</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="bar"><h1>Nastavení</h1><span class="sp"></span><span class="muted" id="info"></span></header>
+<main class="grid2">
+  <section class="panel">
+    <h2 style="margin-top:0;font-size:18px">Prahy a hlas</h2>
+    <form id="settings"></form>
+    <div class="form-row"><button class="primary" id="save">Uložit</button></div>
+    <p class="muted">Doby zadávej jako <code>90s</code>, <code>2m</code>, <code>1m30s</code>.</p>
+  </section>
+  <section class="panel">
+    <h2 style="margin-top:0;font-size:18px">Doby přípravy</h2>
+    <p class="muted">Statický odhad šéfkuchaře platí, dokud položka nemá aspoň 5 změřených vaření.</p>
+    <table class="data"><thead><tr><th>Položka</th><th>Stanice</th><th>Odhad p50/p90</th><th>Naměřeno p50/p90</th><th>n</th></tr></thead>
+    <tbody id="prep"></tbody></table>
+  </section>
+</main>
+<div class="toast"></div>
+<script src="app.js"></script>
+<script>
+const fields = [
+  ["wait_to_claim", "Čekání na kuchaře", "dur"],
+  ["cook_overrun_factor", "Přetažení vaření (× p90)", "num"],
+  ["pass_aging", "Stárnutí na předávce", "dur"],
+  ["reannounce_aging", "Opakovat stárnutí po", "dur"],
+  ["course_gap", "Mezera mezi chody", "dur"],
+  ["auto_fire", "Automatický fire chodu", "bool"],
+  ["announce_min_gap", "Min. mezera mezi hláškami", "dur"],
+  ["eta_refresh", "Obnova ETA na place", "dur"],
+  ["quiet", "Tichý režim (bez hlasu)", "bool"],
+];
+const fmt = (ns) => { const s = Math.round(ns / 1e9); return s >= 60 ? `${Math.floor(s / 60)}m${s % 60 ? (s % 60) + "s" : ""}` : `${s}s`; };
+async function load() {
+  const s = await P.get("/api/settings");
+  document.getElementById("settings").innerHTML = fields.map(([k, label, t]) => `<div class="form-row"><label for="${k}">${label}</label>${
+    t === "bool" ? `<input type="checkbox" id="${k}" ${s[k] ? "checked" : ""}>` : `<input id="${k}" value="${P.esc(s[k])}" size="8">`}</div>`).join("");
+  const st = await P.get("/api/stats");
+  document.getElementById("info").textContent = `displeje: ${st.displays} · latence hlasu: ${st.voice_latency_ms} ms`;
+  document.getElementById("prep").innerHTML = st.prep.map((p) => `<tr><td>${P.esc(p.name)}</td><td>${P.esc(p.station)}</td>
+    <td>${fmt(p.static_p50_ns)} / ${fmt(p.static_p90_ns)}</td>
+    <td>${p.n ? `${fmt(p.learned_p50_ns)} / ${fmt(p.learned_p90_ns)}` : "–"}${p.using === "learned" ? " ✓" : ""}</td><td>${p.n}</td></tr>`).join("");
+}
+document.getElementById("save").onclick = async () => {
+  const body = {};
+  for (const [k, , t] of fields) {
+    const el = document.getElementById(k);
+    body[k] = t === "bool" ? el.checked : t === "num" ? parseFloat(el.value) : el.value.trim();
+  }
+  const r = await fetch("/api/settings", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const d = await r.json();
+  P.toast(r.ok ? "Uloženo" : d.error);
+  if (r.ok) load();
+};
+load();
+</script>
+</body>
+</html>

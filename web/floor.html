@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plac — Předávka</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="bar"><h1>Plac</h1><span class="sp"></span><span class="muted" id="clock"></span><span class="dot"></span></header>
+<main class="floor"><table><tbody id="rows"></tbody></table><div id="empty" class="empty" hidden>Vše vydáno.</div></main>
+<div class="caption"></div>
+<div class="offline">Spojení se serverem ztraceno…</div>
+<script src="app.js"></script>
+<script>
+function state(t) {
+  switch (t.status) {
+    case "ready": return { eta: "", label: "HOTOVO – vyzvedni" + (t.ready_wait_s >= 60 ? ` · ${P.mins(t.ready_wait_s)} min` : "") };
+    case "partial": return { eta: t.eta_min > 0 ? `za ${t.eta_min} min` : "chvíli", label: `částečně ${t.items_ready}/${t.items_total}` };
+    case "hold": return { eta: "", label: "čeká na chod" };
+    case "waiting": return { eta: `za ${t.eta_min} min`, label: "ve frontě" };
+    default: return { eta: t.eta_min > 0 ? `za ${t.eta_min} min` : "chvíli", label: "vaří se" };
+  }
+}
+function render(s) {
+  document.getElementById("clock").textContent = new Date(s.now).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" });
+  const rows = s.tables.map((t) => {
+    const st = state(t);
+    const items = t.items.map((i) => `${i.qty}× ${P.esc(i.name)}`).join(", ");
+    const alert = t.alert !== "none" ? ` ${t.alert} breathe` : "";
+    return `<tr class="${t.status}${alert}"><td>${P.esc(t.table)}</td><td><div class="items">${items}</div></td>
+      <td><div class="eta">${st.eta}</div><div class="state">${st.label}</div></td></tr>`;
+  });
+  document.getElementById("rows").innerHTML = rows.join("");
+  document.getElementById("empty").hidden = rows.length > 0;
+}
+P.connect(render, (a) => P.caption(a.text));
+</script>
+</body>
+</html>

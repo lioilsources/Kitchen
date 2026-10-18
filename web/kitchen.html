@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kuchyň — Předávka</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="bar">
+  <h1 id="title">Kuchyň</h1><span class="muted" id="summary"></span><span class="sp"></span>
+  <span class="muted" id="cook"></span>
+  <button id="repeat" title="R">Ještě jednou</button>
+  <span class="dot"></span>
+</header>
+<main><div class="tickets" id="tickets"></div></main>
+<div class="caption"></div>
+<div class="offline">Spojení se serverem ztraceno…</div>
+<script src="app.js"></script>
+<script>
+const station = P.params.get("station") || "";
+const by = P.params.get("cook") || station;
+let tickets = [], selected = -1;
+document.getElementById("cook").textContent = P.params.get("cook") || "";
+
+function card(it, i) {
+  const wait = P.mins(it.wait_s);
+  const breathe = it.alert !== "none" ? " breathe" : "";
+  let meta;
+  switch (it.status) {
+    case "NEW":
+      meta = `<span>čeká ${wait} min</span><span>${it.start_in_min > 0 ? `začít za ${it.start_in_min} min` : `≈ ${it.eta_min} min`}</span>`;
+      break;
+    case "CLAIMED": case "COOKING":
+      meta = `<span>vaří ${wait} min${it.claimed_by && it.claimed_by !== station ? " · " + P.esc(it.claimed_by) : ""}</span><span>zbývá ≈ ${it.eta_min} min</span>`;
+      break;
+    case "READY":
+      meta = `<span>na předávce ${wait} min</span><span></span>`;
+      break;
+    default:
+      meta = `<span>${P.statusCs[it.status] || it.status}</span><span>${it.course}. chod</span>`;
+  }
+  return `<div class="ticket ${it.status} ${it.alert}${breathe}${i === selected ? " selected" : ""}" data-i="${i}">
+    ${i < 9 && it.status !== "READY" && it.status !== "HOLD" ? `<span class="idx">${i + 1}</span>` : ""}
+    <div class="status-chip">${P.statusCs[it.status] || it.status}</div>
+    <div class="table">${P.esc(it.table)}</div>
+    <div class="name">${it.qty}× ${P.esc(it.name)}</div>
+    ${it.mods.length ? `<div class="mods">${it.mods.map(P.esc).join(", ")}</div>` : ""}
+    ${it.note ? `<div class="mods">${P.esc(it.note)}</div>` : ""}
+    <div class="meta">${meta}</div>
+  </div>`;
+}
+
+function render(s) {
+  const st = s.stations.find((x) => x.id === station);
+  document.getElementById("title").textContent = st ? st.name : "Kuchyň (vyber stanici)";
+  const mine = s.items.filter((it) => !station || it.station === station);
+  const rank = { CLAIMED: 0, COOKING: 0, NEW: 1, HOLD: 2, READY: 3 };
+  mine.sort((a, b) => rank[a.status] - rank[b.status]);
+  const prevId = tickets[selected] && tickets[selected].id;
+  tickets = mine;
+  selected = prevId ? tickets.findIndex((t) => t.id === prevId) : -1;
+  const nNew = mine.filter((i) => i.status === "NEW").length;
+  const nCook = mine.filter((i) => i.status === "CLAIMED" || i.status === "COOKING").length;
+  document.getElementById("summary").textContent = `${nNew} čeká · ${nCook} vaří`;
+  document.getElementById("tickets").innerHTML = mine.map(card).join("") ||
+    `<p class="muted" style="font-size:24px">Fronta je prázdná.</p>`;
+}
+
+async function bump(i) {
+  const it = tickets[i];
+  try {
+    if (it) await P.post(`/api/items/${it.id}/bump`, { by });
+    else if (station) await P.post(`/api/stations/${station}/bump`, { by });
+    selected = -1;
+  } catch (e) { P.toast(e.message); }
+}
+
+document.getElementById("tickets").addEventListener("click", (ev) => {
+  const el = ev.target.closest(".ticket");
+  if (el) bump(+el.dataset.i);
+});
+document.getElementById("repeat").onclick = () => P.post("/api/repeat");
+
+// Bump bar = USB klávesnice (docs/protocol.md).
+document.addEventListener("keydown", (ev) => {
+  const k = ev.key;
+  const actionable = tickets.filter((t) => t.status !== "READY" && t.status !== "HOLD").length;
+  if (k >= "1" && k <= "9") { const i = +k - 1; if (i < actionable) selected = i; }
+  else if (k === "Enter" || k === " ") { ev.preventDefault(); bump(selected); return; }
+  else if (k === "ArrowRight") selected = Math.min(selected + 1, actionable - 1);
+  else if (k === "ArrowLeft") selected = Math.max(selected - 1, 0);
+  else if (k === "Escape") selected = -1;
+  else if (k === "r" || k === "R") { P.post("/api/repeat"); return; }
+  else return;
+  document.querySelectorAll(".ticket").forEach((el) => el.classList.toggle("selected", +el.dataset.i === selected));
+});
+
+P.connect(render, (a) => P.caption(a.text));
+</script>
+</body>
+</html>

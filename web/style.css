@@ -1,0 +1,129 @@
+/* Předávka — klidný tmavý vzhled: málo barev, pomalé "dýchání" místo blikání. */
+:root {
+  --bg: #121417;
+  --panel: #1b1f24;
+  --panel-2: #232830;
+  --line: #2e343d;
+  --text: #e8eaed;
+  --muted: #8b939e;
+  --accent: #7fb3d5;
+  --ok: #7cc49a;
+  --warn: #e0a96d;
+  --late: #e07b6d;
+  --hold: #6b7480;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.35 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+header.bar {
+  display: flex; align-items: center; gap: 16px;
+  padding: 10px 20px; border-bottom: 1px solid var(--line); background: var(--panel);
+}
+header.bar h1 { font-size: 18px; margin: 0; font-weight: 600; letter-spacing: .02em; }
+header.bar .sp { flex: 1; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--late); display: inline-block; }
+.dot.on { background: var(--ok); }
+.muted { color: var(--muted); }
+button, select, input {
+  font: inherit; color: var(--text); background: var(--panel-2);
+  border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px;
+}
+button { cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button.primary { background: #2b4a5e; border-color: #3d6a86; }
+main { padding: 16px 20px 80px; }
+
+/* breathing: pomalá změna jasu, 2.8 s */
+@keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: .62; } }
+.breathe { animation: breathe 2.8s ease-in-out infinite; }
+
+/* --- kuchyň --- */
+.tickets { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.ticket {
+  background: var(--panel); border: 2px solid var(--line); border-radius: 16px; padding: 14px 16px;
+  cursor: pointer; user-select: none; position: relative; min-height: 150px;
+}
+.ticket .idx { position: absolute; top: 10px; right: 14px; color: var(--muted); font-size: 14px; }
+.ticket .table { font-size: 44px; font-weight: 700; line-height: 1; }
+.ticket .name { font-size: 24px; margin-top: 8px; font-weight: 600; }
+.ticket .mods { color: var(--warn); margin-top: 4px; font-size: 17px; }
+.ticket .meta { display: flex; justify-content: space-between; margin-top: 12px; color: var(--muted); font-size: 16px; }
+.ticket.CLAIMED, .ticket.COOKING { border-color: var(--accent); }
+.ticket.warn { border-color: var(--warn); }
+.ticket.late { border-color: var(--late); }
+.ticket.HOLD { opacity: .45; }
+.ticket.READY { opacity: .5; min-height: 0; }
+.ticket.READY .table { font-size: 28px; }
+.ticket.READY .name { font-size: 18px; }
+.ticket.selected { outline: 3px solid var(--text); outline-offset: 2px; }
+.status-chip { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+
+/* --- plac --- */
+.floor { font-size: 28px; }
+.floor table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
+.floor td { padding: 16px 22px; background: var(--panel); }
+.floor td:first-child { border-radius: 16px 0 0 16px; font-size: 64px; font-weight: 700; width: 1%; white-space: nowrap; }
+.floor td:last-child { border-radius: 0 16px 16px 0; text-align: right; white-space: nowrap; }
+.floor .items { color: var(--muted); font-size: 24px; }
+.floor .eta { font-size: 44px; font-weight: 600; }
+.floor .state { font-size: 22px; color: var(--muted); }
+.floor tr.ready td { background: #1d3327; }
+.floor tr.ready .state { color: var(--ok); font-weight: 700; font-size: 30px; }
+.floor tr.partial .state { color: var(--accent); }
+.floor tr.warn td, .floor tr.late td { background: #3a2a1c; }
+.floor tr.late td { background: #3d211d; }
+.floor tr.hold { opacity: .5; }
+.floor .empty { text-align: center; color: var(--muted); padding: 80px 0; font-size: 32px; }
+
+/* titulek poslední hlášky */
+.caption {
+  position: fixed; left: 0; right: 0; bottom: 0; padding: 18px 24px;
+  background: rgba(18, 20, 23, .92); border-top: 1px solid var(--line);
+  font-size: 26px; transition: opacity 1.2s ease; opacity: 0; pointer-events: none;
+}
+.caption.show { opacity: 1; }
+.offline {
+  position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+  background: rgba(18, 20, 23, .75); font-size: 28px; color: var(--warn);
+}
+.offline.show { display: flex; }
+
+/* --- předávka (expo) --- */
+.pass { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+.pass .card { background: var(--panel); border: 2px solid var(--line); border-radius: 16px; padding: 14px 16px; }
+.pass .card.ready { border-color: var(--ok); }
+.pass .card.warn { border-color: var(--warn); }
+.pass .card.late { border-color: var(--late); }
+.pass .card h2 { margin: 0 0 6px; font-size: 40px; display: flex; justify-content: space-between; align-items: baseline; }
+.pass .card h2 small { font-size: 16px; color: var(--muted); font-weight: 400; }
+.pass ul { list-style: none; padding: 0; margin: 0 0 10px; font-size: 19px; }
+.pass li.READY { color: var(--ok); }
+.pass li.HOLD { color: var(--hold); }
+.pass .actions { display: flex; gap: 8px; }
+
+/* --- tablet / admin --- */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 800px) { .grid2 { grid-template-columns: 1fr; } }
+.menu-btns { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.menu-btns button { padding: 16px 10px; text-align: left; }
+.menu-btns button small { display: block; color: var(--muted); font-size: 13px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+.cart li { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.cart ul { list-style: none; padding: 0; margin: 10px 0; }
+.form-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+.form-row label { min-width: 170px; color: var(--muted); }
+table.data { width: 100%; border-collapse: collapse; font-size: 15px; }
+table.data th, table.data td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+table.data th { color: var(--muted); font-weight: 500; }
+.links a { display: block; padding: 18px 20px; margin-bottom: 10px; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 14px; color: var(--text); text-decoration: none; font-size: 20px; }
+.links a small { display: block; color: var(--muted); font-size: 15px; }
+.toast { position: fixed; right: 20px; bottom: 20px; background: var(--panel-2); border: 1px solid var(--line);
+  padding: 10px 16px; border-radius: 10px; opacity: 0; transition: opacity .4s; }
+.toast.show { opacity: 1; }
