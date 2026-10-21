@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+    tags-ignore: ['v*']
+  pull_request:
+    branches: ['**']
+
+jobs:
+  server:
+    name: Server (go vet + test)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Test
+        run: go test ./...
+
+  display:
+    name: Display app (analyze + test)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        working-directory: apps/display
+        run: flutter pub get
+
+      - name: Analyze
+        working-directory: apps/display
+        run: flutter analyze --no-fatal-infos
+
+      - name: Test
+        working-directory: apps/display
+        run: flutter test
+
+  build-android-debug:
+    name: Android Debug Build
+    runs-on: ubuntu-latest
+    needs: display
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        working-directory: apps/display
+        run: flutter pub get
+
+      - name: Build APK (debug)
+        working-directory: apps/display
+        run: flutter build apk --debug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-debug-${{ github.sha }}
+          path: apps/display/build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 7
