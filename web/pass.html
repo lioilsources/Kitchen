@@ -29,7 +29,7 @@ function render(s) {
       : t.status === "hold" ? "čeká na chod" : `≈ ${t.eta_min} min · ${t.items_ready}/${t.items_total}`;
     return `<div class="card ${cls}${alert}">
       <h2>${P.esc(t.table)} <small>${sub}</small></h2>
-      <ul>${its.map((i) => `<li class="${i.status}">${i.qty}× ${P.esc(i.name)} <span class="muted">· ${P.statusCs[i.status]}${i.course > 1 ? ` · ${i.course}. chod` : ""}</span></li>`).join("")}</ul>
+      <ul>${its.map((i) => `<li class="${i.status}">${P.pic(i)}${i.qty}× ${P.esc(i.name)} <span class="muted">· ${P.statusCs[i.status]}${i.course > 1 ? ` · ${i.course}. chod` : ""}</span></li>`).join("")}</ul>
       <div class="actions">
         ${hasReady ? `<button class="primary" data-t="${P.esc(t.table)}" data-a="pick">Vyzvednuto</button>` : ""}
         ${hasHold ? `<button data-t="${P.esc(t.table)}" data-a="fire">Fire další chod</button>` : ""}

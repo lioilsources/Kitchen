@@ -17,6 +17,7 @@ type Server struct {
 	WS      http.Handler
 	Web     fs.FS
 	App     fs.FS // volitelně Flutter web build (apps/display/build/web), servírovaný na /app/
+	Art     fs.FS // volitelně obrázky jídel (config art_dir), servírované na /art/
 	Latency func() time.Duration
 	Clients func() int
 }
@@ -47,6 +48,9 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) { w.Write([]byte("ok\n")) })
 	if s.App != nil {
 		mux.Handle("GET /app/", http.StripPrefix("/app/", http.FileServerFS(s.App)))
+	}
+	if s.Art != nil {
+		mux.Handle("GET /art/", http.StripPrefix("/art/", http.FileServerFS(s.Art)))
 	}
 	mux.Handle("GET /", http.FileServerFS(s.Web))
 	return logRequests(mux)

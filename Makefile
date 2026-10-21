@@ -1,3 +1,4 @@
+CONFIG ?= config.dev.yaml
 .PHONY: build test run sim bon app-web linux
 
 build:
@@ -11,7 +12,7 @@ test:
 	cd apps/display && flutter analyze && flutter test
 
 run: build
-	./bin/predavka-server -config config.dev.yaml
+	./bin/predavka-server -config $(CONFIG)
 
 sim:
 	go run ./tools/sim -url http://localhost:8088 -rate 40 -cooks -speed 10

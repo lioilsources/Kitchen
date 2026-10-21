@@ -105,6 +105,9 @@ func run(cfgPath string) error {
 	if cfg.AppDir != "" {
 		apiSrv.App = os.DirFS(cfg.AppDir)
 	}
+	if cfg.ArtDir != "" {
+		apiSrv.Art = os.DirFS(cfg.ArtDir)
+	}
 	srv := &http.Server{
 		Addr:              cfg.Listen,
 		Handler:           apiSrv.Handler(),

@@ -7,7 +7,7 @@
 </head>
 <body>
 <header class="bar"><h1>Plac</h1><span class="sp"></span><span class="muted" id="clock"></span><span class="dot"></span></header>
-<main class="floor"><table><tbody id="rows"></tbody></table><div id="empty" class="empty" hidden>Vše vydáno.</div></main>
+<main class="floor"><table><tbody id="rows"></tbody></table><div id="empty" class="empty" hidden><img class="empty-art" src="art/chef.png" alt="" onerror="this.remove()">Vše vydáno.</div></main>
 <div class="caption"></div>
 <div class="offline">Spojení se serverem ztraceno…</div>
 <script src="app.js"></script>
@@ -25,7 +25,7 @@ function render(s) {
   document.getElementById("clock").textContent = new Date(s.now).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" });
   const rows = s.tables.map((t) => {
     const st = state(t);
-    const items = t.items.map((i) => `${i.qty}× ${P.esc(i.name)}`).join(", ");
+    const items = t.items.map((i) => `${P.pic(i)}${i.qty}× ${P.esc(i.name)}`).join(", ");
     const alert = t.alert !== "none" ? ` ${t.alert} breathe` : "";
     return `<tr class="${t.status}${alert}"><td>${P.esc(t.table)}</td><td><div class="items">${items}</div></td>
       <td><div class="eta">${st.eta}</div><div class="state">${st.label}</div></td></tr>`;

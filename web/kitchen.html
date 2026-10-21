@@ -43,7 +43,7 @@ function card(it, i) {
     ${i < 9 && it.status !== "READY" && it.status !== "HOLD" ? `<span class="idx">${i + 1}</span>` : ""}
     <div class="status-chip">${P.statusCs[it.status] || it.status}</div>
     <div class="table">${P.esc(it.table)}</div>
-    <div class="name">${it.qty}× ${P.esc(it.name)}</div>
+    <div class="name">${P.pic(it)}${it.qty}× ${P.esc(it.name)}</div>
     ${it.mods.length ? `<div class="mods">${it.mods.map(P.esc).join(", ")}</div>` : ""}
     ${it.note ? `<div class="mods">${P.esc(it.note)}</div>` : ""}
     <div class="meta">${meta}</div>
@@ -63,7 +63,7 @@ function render(s) {
   const nCook = mine.filter((i) => i.status === "CLAIMED" || i.status === "COOKING").length;
   document.getElementById("summary").textContent = `${nNew} čeká · ${nCook} vaří`;
   document.getElementById("tickets").innerHTML = mine.map(card).join("") ||
-    `<p class="muted" style="font-size:24px">Fronta je prázdná.</p>`;
+    `<div style="grid-column:1/-1"><img class="empty-art" src="art/chef.png" alt="" onerror="this.remove()"><p class="muted" style="font-size:24px;text-align:center">Fronta je prázdná.</p></div>`;
 }
 
 async function bump(i) {

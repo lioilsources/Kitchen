@@ -15,6 +15,7 @@ type Config struct {
 	Listen   string          `yaml:"listen"`
 	DataFile string          `yaml:"data_file"`
 	AppDir   string          `yaml:"app_dir"` // Flutter web build pro /app/ (prázdné = jen vestavěné web displeje)
+	ArtDir   string          `yaml:"art_dir"` // obrázky jídel servírované na /art/ (MenuItem.Image)
 	Stations []model.Station `yaml:"stations"`
 	Menu     []MenuItem      `yaml:"menu"`
 	Settings Settings        `yaml:"settings"`
@@ -30,11 +31,13 @@ type MenuItem struct {
 	SKU     string   `yaml:"sku" json:"sku"`
 	Name    string   `yaml:"name" json:"name"`
 	Station string   `yaml:"station" json:"station"`
-	Prep    Duration `yaml:"prep" json:"prep"`         // static p50
-	PrepP90 Duration `yaml:"prep_p90" json:"prep_p90"` // static p90 (default prep × 1.5)
-	Course  int      `yaml:"course" json:"course"`     // default course (1 = předkrm/polévka/hlavní dle podniku)
-	Aliases []string `yaml:"aliases" json:"aliases"`   // názvy na bonu, pod kterými položka chodí z POS
-	Say     Say      `yaml:"say" json:"say"`           // tvary pro TTS
+	Prep    Duration `yaml:"prep" json:"prep"`             // static p50
+	PrepP90 Duration `yaml:"prep_p90" json:"prep_p90"`     // static p90 (default prep × 1.5)
+	Course  int      `yaml:"course" json:"course"`         // default course (1 = předkrm/polévka/hlavní dle podniku)
+	Aliases []string `yaml:"aliases" json:"aliases"`       // názvy na bonu, pod kterými položka chodí z POS
+	Say     Say      `yaml:"say" json:"say"`               // tvary pro TTS
+	Emoji   string   `yaml:"emoji" json:"emoji,omitempty"` // na displejích, když chybí obrázek
+	Image   string   `yaml:"image" json:"image,omitempty"` // soubor v art_dir, např. pizza.png
 }
 
 // Say holds Czech grammatical forms: "jedna svíčková", "dvě svíčkové", "pět svíčkových".

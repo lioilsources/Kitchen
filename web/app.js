@@ -73,6 +73,14 @@ const P = {
 
   mins(s) { return Math.floor(s / 60); },
 
+  // pic(x) — obrázek jídla (x.image), dokud se nenačte nebo chybí, tak emoji (x.emoji).
+  pic(x) {
+    if (!x.image && !x.emoji) return "";
+    const e = P.esc(x.emoji || "");
+    if (!x.image) return `<span class="pic">${e}</span>`;
+    return `<span class="pic" data-e="${e}"><img src="${P.esc(x.image)}" alt="" onerror="this.parentNode.textContent=this.parentNode.dataset.e"></span>`;
+  },
+
   esc(s) {
     return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   },

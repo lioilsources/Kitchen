@@ -1,0 +1,34 @@
+# Dětská restaurace: hra doma na jedné Wi-Fi (Mac = server a reproduktor, tablet = kuchyň, telefony = číšník a plac).
+#   make run CONFIG=config.kids.yaml   →  http://<IP Macu>:8088
+# Všechno v jednom chodu a v jedné stanici, „vaření“ trvá 1–2 minuty, urgence přijdou rychle.
+# Obrázky jídel: art/kids/<sku>.png; dokud tam nejsou, displeje ukazují emoji.
+listen: ":8088"
+data_file: "kids.db"          # vlastní databáze, ať se hra nemíchá s vývojovými daty; mezi hrami ji smaž
+art_dir: "art/kids"
+stations:
+  - {id: kuchyn, name: Kuchyň, parallelism: 2}
+course_names: {1: jídlo}
+menu:
+  - {sku: palacinky, name: Palačinky, station: kuchyn, prep: 1m30s, course: 1, emoji: "🥞", image: palacinky.png, say: {one: porce palačinek, few: porce palačinek, many: porcí palačinek, gender: f}}
+  - {sku: pizza,     name: Pizza,     station: kuchyn, prep: 2m,    course: 1, emoji: "🍕", image: pizza.png,     say: {one: pizza, few: pizzy, many: pizz, gender: f}}
+  - {sku: hamburger, name: Hamburger, station: kuchyn, prep: 2m,    course: 1, emoji: "🍔", image: hamburger.png, aliases: [burger], say: {one: hamburger, few: hamburgery, many: hamburgerů, gender: m}}
+  - {sku: hranolky,  name: Hranolky,  station: kuchyn, prep: 1m,    course: 1, emoji: "🍟", image: hranolky.png,  say: {one: porce hranolek, few: porce hranolek, many: porcí hranolek, gender: f}}
+  - {sku: spagety,   name: Špagety,   station: kuchyn, prep: 2m,    course: 1, emoji: "🍝", image: spagety.png,   say: {one: porce špaget, few: porce špaget, many: porcí špaget, gender: f}}
+  - {sku: parek,     name: Párek v rohlíku, station: kuchyn, prep: 1m, course: 1, emoji: "🌭", image: parek.png, aliases: [párek, hotdog], say: {one: párek v rohlíku, few: párky v rohlíku, many: párků v rohlíku, gender: m}}
+  - {sku: zmrzlina,  name: Zmrzlina,  station: kuchyn, prep: 1m,    course: 1, emoji: "🍦", image: zmrzlina.png,  say: {one: zmrzlina, few: zmrzliny, many: zmrzlin, gender: f}}
+  - {sku: dort,      name: Dort,      station: kuchyn, prep: 1m,    course: 1, emoji: "🍰", image: dort.png,      say: {one: dort, few: dorty, many: dortů, gender: m}}
+  - {sku: limonada,  name: Limonáda,  station: kuchyn, prep: 1m,    course: 1, emoji: "🍋", image: limonada.png,  say: {one: limonáda, few: limonády, many: limonád, gender: f}}
+  - {sku: kakao,     name: Kakao,     station: kuchyn, prep: 1m,    course: 1, emoji: "☕", image: kakao.png,     say: {one: hrnek kakaa, few: hrnky kakaa, many: hrnků kakaa, gender: m}}
+  - {sku: ovoce,     name: Ovocný talíř, station: kuchyn, prep: 1m30s, course: 1, emoji: "🍓", image: ovoce.png, say: {one: ovocný talíř, few: ovocné talíře, many: ovocných talířů, gender: m}}
+settings:
+  wait_to_claim: 45s        # „Stůl tři čeká na kuchaře.“
+  cook_overrun_factor: 1.5
+  pass_aging: 1m            # „Stůl tři hotovo, na předávce jedna minuta.“
+  reannounce_aging: 1m
+  course_gap: 1m
+  auto_fire: true
+  announce_min_gap: 6s      # děti nečekají 20 s na další větu
+  eta_refresh: 10s
+  quiet: false
+tts: {engine: say, say_voice: Zuzana, output: play, play_cmd: [afplay]}
+escpos: {enabled: false}

@@ -27,6 +27,24 @@ make sim          # simulovaný provoz: objednávky + kuchaři + expo
 
 Otevři http://localhost:8088 → plac, předávka, tablet, nastavení a jednotlivé stanice kuchyně.
 
+## Dětská restaurace (hra doma)
+
+`config.kids.yaml`: jedna stanice „Kuchyň“, dětské menu s obrázky (`art/kids/`, jinak emoji), vaření 1–2 min,
+rychlé urgence, vlastní `kids.db`. Mac je server i reproduktor, ostatní zařízení jen otevřou prohlížeč na stejné Wi-Fi.
+
+```bash
+make run CONFIG=config.kids.yaml      # macOS povolí příchozí spojení; IP Macu: ipconfig getifaddr en0
+```
+
+| Role | Zařízení | Adresa |
+|---|---|---|
+| číšník | telefon | `http://<IP>:8088/tablet.html` |
+| kuchař | tablet | `http://<IP>:8088/kitchen.html?station=kuchyn` |
+| expedient (rodič) | Mac | `http://<IP>:8088/pass.html` |
+| plac | druhý telefon | `http://<IP>:8088/floor.html` |
+
+Novou hru začneš smazáním `kids.db`.
+
 ## Komponenty
 
 ```

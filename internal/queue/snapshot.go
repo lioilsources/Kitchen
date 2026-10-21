@@ -42,6 +42,8 @@ type ItemView struct {
 	ETAMin     int          `json:"eta_min"`
 	StartInMin int          `json:"start_in_min"`
 	Alert      string       `json:"alert"`
+	Emoji      string       `json:"emoji,omitempty"`
+	Image      string       `json:"image,omitempty"`
 }
 
 type TableView struct {
@@ -60,6 +62,8 @@ type TableItemView struct {
 	Name   string       `json:"name"`
 	Qty    int          `json:"qty"`
 	Status model.Status `json:"status"`
+	Emoji  string       `json:"emoji,omitempty"`
+	Image  string       `json:"image,omitempty"`
 }
 
 const (
@@ -96,6 +100,7 @@ func (e *Engine) snapshot(now time.Time) Snapshot {
 			WaitS: int(now.Sub(it.ChangedAt) / time.Second), ETAMin: eta.Minutes(r.ETA),
 			StartInMin: int(r.StartIn / time.Minute), Alert: e.itemAlert(it, r, now),
 		})
+		s.Items[len(s.Items)-1].Emoji, s.Items[len(s.Items)-1].Image = e.pic(it.SKU)
 	}
 	s.Tables = e.tables(items, etas, now)
 	return s
@@ -143,7 +148,7 @@ func (e *Engine) tables(items []*model.Item, etas map[string]eta.Result, now tim
 		if tv.Course == 0 {
 			tv.Status = "hold"
 			for _, it := range its {
-				tv.Items = append(tv.Items, TableItemView{Name: it.Name, Qty: it.Qty, Status: it.Status})
+				tv.Items = append(tv.Items, e.tableItem(it))
 			}
 			tv.ItemsTotal = len(its)
 			delete(e.etaShown, t)
@@ -158,7 +163,7 @@ func (e *Engine) tables(items []*model.Item, etas map[string]eta.Result, now tim
 				continue
 			}
 			tv.ItemsTotal++
-			tv.Items = append(tv.Items, TableItemView{Name: it.Name, Qty: it.Qty, Status: it.Status})
+			tv.Items = append(tv.Items, e.tableItem(it))
 			if r := etas[it.ID]; r.ETA > maxETA {
 				maxETA = r.ETA
 			}
@@ -226,4 +231,22 @@ func (e *Engine) stableETA(table string, min int, ready bool, now time.Time) int
 		return min
 	}
 	return prev.min
+}
+
+// pic returns the menu emoji and image URL (relative to the web root) for a SKU.
+func (e *Engine) pic(sku string) (emoji, image string) {
+	m := e.menu[sku]
+	if m == nil {
+		return "", ""
+	}
+	if m.Image != "" {
+		image = "art/" + m.Image
+	}
+	return m.Emoji, image
+}
+
+func (e *Engine) tableItem(it *model.Item) TableItemView {
+	v := TableItemView{Name: it.Name, Qty: it.Qty, Status: it.Status}
+	v.Emoji, v.Image = e.pic(it.SKU)
+	return v
 }

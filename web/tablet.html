@@ -24,22 +24,22 @@
 let menu = [], lines = [];
 function renderLines() {
   document.getElementById("lines").innerHTML = lines.map((l, i) => `<li>
-    <span>${l.qty}× ${P.esc(l.name)}${l.mods.length ? ` <span class="muted">(${P.esc(l.mods.join(", "))})</span>` : ""}
+    <span>${P.pic(l)}${l.qty}× ${P.esc(l.name)}${l.mods.length ? ` <span class="muted">(${P.esc(l.mods.join(", "))})</span>` : ""}
       <span class="muted">· ${l.course}. chod</span></span>
     <span><button data-i="${i}" data-a="mod">úprava</button> <button data-i="${i}" data-a="course">chod</button>
       <button data-i="${i}" data-a="minus">−</button></span></li>`).join("") || `<li class="muted">Prázdné</li>`;
 }
 P.get("/api/menu").then((m) => {
-  menu = m;
-  document.getElementById("menu").innerHTML = m.map((x, i) =>
-    `<button data-i="${i}">${P.esc(x.name)}<small>${P.esc(x.station)} · ${x.course}. chod</small></button>`).join("");
+  menu = m.map((x) => ({ ...x, image: x.image && "art/" + x.image }));
+  document.getElementById("menu").innerHTML = menu.map((x, i) =>
+    `<button data-i="${i}">${P.pic(x)}${P.esc(x.name)}<small>${P.esc(x.station)} · ${x.course}. chod</small></button>`).join("");
 });
 document.getElementById("menu").addEventListener("click", (ev) => {
   const b = ev.target.closest("button");
   if (!b) return;
   const m = menu[+b.dataset.i];
   const ex = lines.find((l) => l.sku === m.sku && l.mods.length === 0);
-  if (ex) ex.qty++; else lines.push({ sku: m.sku, name: m.name, qty: 1, mods: [], course: m.course });
+  if (ex) ex.qty++; else lines.push({ sku: m.sku, name: m.name, qty: 1, mods: [], course: m.course, emoji: m.emoji, image: m.image });
   renderLines();
 });
 document.getElementById("lines").addEventListener("click", (ev) => {
