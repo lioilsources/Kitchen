@@ -6,7 +6,7 @@
 #
 # The APK is what goes on the Android TV / tablet displays (sideload from the
 # GitHub release). Secrets: Distribution/scripts/setup-gh-secrets.sh
-# --repo lioilsources/Kitchen --bundle-id cz.predavka.predavka_display
+# --repo lioilsources/Kitchen --bundle-id com.ol1n.predavka_display
 
 name: Release Android
 
