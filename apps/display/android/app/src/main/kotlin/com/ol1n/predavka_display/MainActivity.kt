@@ -1,4 +1,4 @@
-package cz.predavka.predavka_display
+package com.ol1n.predavka_display
 
 import android.os.Bundle
 import android.view.WindowManager
