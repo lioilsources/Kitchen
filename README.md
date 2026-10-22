@@ -5,6 +5,7 @@ na předávce, berou si je z fronty jedním stiskem, obsluha vidí na jednom dis
 jaký stůl**, a jídlo, které leží na předávce, si po pár minutách samo řekne o vyzvednutí.
 
 Vše běží lokálně na LAN (jeden mini PC), bez cloudu, česky. Plán: [`docs/PLAN.md`](docs/PLAN.md).
+Varianta bez PC (Android tablet jako hub, hlas na klientech): [`docs/PLAN-MOBILE.md`](docs/PLAN-MOBILE.md).
 
 ## Stav (2026-10-18)
 
