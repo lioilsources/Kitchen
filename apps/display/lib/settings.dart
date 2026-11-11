@@ -2,12 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum DisplayMode {
-  kitchen('Kuchyň'),
-  pass('Předávka'),
-  floor('Plac');
-
-  const DisplayMode(this.label);
-  final String label;
+  kitchen,
+  pass,
+  floor;
 
   static DisplayMode parse(String? v) => switch (v) {
     'floor' => DisplayMode.floor,

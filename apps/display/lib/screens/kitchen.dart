@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../api.dart';
+import '../l10n/gen/app_localizations.dart';
 import '../models.dart';
 import '../settings.dart';
 import '../widgets/palette.dart';
@@ -57,11 +58,12 @@ class _KitchenScreenState extends State<KitchenScreen> {
       await action();
     } on ApiException catch (e) {
       if (!mounted) return;
+      final l = AppLocalizations.of(context);
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(
           SnackBar(
-            content: Text('Nepodařilo se: ${e.message}', style: const TextStyle(fontSize: 18)),
+            content: Text(l.actionFailed(e.localized(l)), style: const TextStyle(fontSize: 18)),
             backgroundColor: Palette.surfaceHigh,
             duration: const Duration(seconds: 3),
           ),
@@ -133,14 +135,26 @@ class _KitchenScreenState extends State<KitchenScreen> {
 
   static int? _digit(LogicalKeyboardKey k) {
     const digits = [
-      LogicalKeyboardKey.digit1, LogicalKeyboardKey.digit2, LogicalKeyboardKey.digit3, //
-      LogicalKeyboardKey.digit4, LogicalKeyboardKey.digit5, LogicalKeyboardKey.digit6,
-      LogicalKeyboardKey.digit7, LogicalKeyboardKey.digit8, LogicalKeyboardKey.digit9,
+      LogicalKeyboardKey.digit1,
+      LogicalKeyboardKey.digit2,
+      LogicalKeyboardKey.digit3, //
+      LogicalKeyboardKey.digit4,
+      LogicalKeyboardKey.digit5,
+      LogicalKeyboardKey.digit6,
+      LogicalKeyboardKey.digit7,
+      LogicalKeyboardKey.digit8,
+      LogicalKeyboardKey.digit9,
     ];
     const numpad = [
-      LogicalKeyboardKey.numpad1, LogicalKeyboardKey.numpad2, LogicalKeyboardKey.numpad3, //
-      LogicalKeyboardKey.numpad4, LogicalKeyboardKey.numpad5, LogicalKeyboardKey.numpad6,
-      LogicalKeyboardKey.numpad7, LogicalKeyboardKey.numpad8, LogicalKeyboardKey.numpad9,
+      LogicalKeyboardKey.numpad1,
+      LogicalKeyboardKey.numpad2,
+      LogicalKeyboardKey.numpad3, //
+      LogicalKeyboardKey.numpad4,
+      LogicalKeyboardKey.numpad5,
+      LogicalKeyboardKey.numpad6,
+      LogicalKeyboardKey.numpad7,
+      LogicalKeyboardKey.numpad8,
+      LogicalKeyboardKey.numpad9,
     ];
     final a = digits.indexOf(k);
     if (a >= 0) return a + 1;
@@ -151,8 +165,9 @@ class _KitchenScreenState extends State<KitchenScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     if (widget.settings.station.isEmpty) {
-      return const _Centered('Vyberte stanici v nastavení (dlouhý stisk na název nahoře).');
+      return _Centered(l.pickStationHint);
     }
     return Focus(
       focusNode: _focus,
@@ -165,14 +180,14 @@ class _KitchenScreenState extends State<KitchenScreen> {
           listenable: widget.client,
           builder: (context, _) {
             final s = widget.client.snapshot;
-            if (s == null) return const _Centered('Připojuji se k serveru…');
+            if (s == null) return _Centered(l.connecting);
             final main = _main(s);
             final ready = _ready(s);
             if (_selectedId != null && main.every((i) => i.id != _selectedId)) {
               _selectedId = null; // vybraný lístek zmizel
             }
             if (main.isEmpty && ready.isEmpty) {
-              return const _Centered('Fronta je prázdná. Klid.');
+              return _Centered(l.queueEmpty);
             }
             return LayoutBuilder(
               builder: (context, c) {
@@ -204,9 +219,9 @@ class _KitchenScreenState extends State<KitchenScreen> {
                       ),
                       if (ready.isNotEmpty) ...[
                         const SizedBox(height: 28),
-                        const Text(
-                          'Na předávce',
-                          style: TextStyle(fontSize: 18, color: Palette.textFaint, fontWeight: FontWeight.w600),
+                        Text(
+                          l.atPass,
+                          style: const TextStyle(fontSize: 18, color: Palette.textFaint, fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(height: 10),
                         Wrap(

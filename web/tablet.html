@@ -6,33 +6,34 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="bar"><h1>Nová objednávka</h1><span class="sp"></span><span class="dot"></span></header>
+<header class="bar"><h1 data-i18n="newOrder">Nová objednávka</h1><span class="sp"></span><span class="dot"></span></header>
 <main class="grid2">
   <section>
     <div class="menu-btns" id="menu"></div>
   </section>
   <section class="panel cart">
-    <div class="form-row"><label for="table">Stůl</label><input id="table" inputmode="numeric" size="6" autofocus></div>
-    <div class="form-row"><label for="note">Poznámka</label><input id="note" style="flex:1"></div>
+    <div class="form-row"><label for="table" data-i18n="tableLabel">Stůl</label><input id="table" inputmode="numeric" size="6" autofocus></div>
+    <div class="form-row"><label for="note" data-i18n="noteLabel">Poznámka</label><input id="note" style="flex:1"></div>
     <ul id="lines"></ul>
-    <div class="form-row"><button class="primary" id="send">Odeslat do kuchyně</button><button id="clear">Vymazat</button></div>
+    <div class="form-row"><button class="primary" id="send" data-i18n="sendToKitchen">Odeslat do kuchyně</button><button id="clear" data-i18n="clearBtn">Vymazat</button></div>
   </section>
 </main>
-<div class="offline">Spojení se serverem ztraceno…</div>
+<div class="offline" data-i18n="offlineBanner">Spojení se serverem ztraceno…</div>
+<script src="i18n.js"></script>
 <script src="app.js"></script>
 <script>
 let menu = [], lines = [];
 function renderLines() {
   document.getElementById("lines").innerHTML = lines.map((l, i) => `<li>
     <span>${P.pic(l)}${l.qty}× ${P.esc(l.name)}${l.mods.length ? ` <span class="muted">(${P.esc(l.mods.join(", "))})</span>` : ""}
-      <span class="muted">· ${l.course}. chod</span></span>
-    <span><button data-i="${i}" data-a="mod">úprava</button> <button data-i="${i}" data-a="course">chod</button>
-      <button data-i="${i}" data-a="minus">−</button></span></li>`).join("") || `<li class="muted">Prázdné</li>`;
+      <span class="muted">· ${T("courseOrd", { n: l.course })}</span></span>
+    <span><button data-i="${i}" data-a="mod">${T("modBtn")}</button> <button data-i="${i}" data-a="course">${T("courseBtn")}</button>
+      <button data-i="${i}" data-a="minus">−</button></span></li>`).join("") || `<li class="muted">${T("emptyCart")}</li>`;
 }
-P.get("/api/menu").then((m) => {
+I18N.ready.then(() => P.get("/api/menu")).then((m) => {
   menu = m.map((x) => ({ ...x, image: x.image && "art/" + x.image }));
   document.getElementById("menu").innerHTML = menu.map((x, i) =>
-    `<button data-i="${i}">${P.pic(x)}${P.esc(x.name)}<small>${P.esc(x.station)} · ${x.course}. chod</small></button>`).join("");
+    `<button data-i="${i}">${P.pic(x)}${P.esc(x.name)}<small>${P.esc(x.station)} · ${T("courseOrd", { n: x.course })}</small></button>`).join("");
 });
 document.getElementById("menu").addEventListener("click", (ev) => {
   const b = ev.target.closest("button");
@@ -50,7 +51,7 @@ document.getElementById("lines").addEventListener("click", (ev) => {
   else if (b.dataset.a === "course") l.course = l.course % 3 + 1;
   else if (b.dataset.a === "mod") {
     const input = document.createElement("input");
-    input.placeholder = "např. bez cibule";
+    input.placeholder = T("modPlaceholder");
     b.replaceWith(input);
     input.focus();
     input.onkeydown = (e) => { if (e.key === "Enter") { if (input.value.trim()) l.mods.push(input.value.trim()); renderLines(); } };
@@ -62,18 +63,21 @@ document.getElementById("lines").addEventListener("click", (ev) => {
 document.getElementById("clear").onclick = () => { lines = []; renderLines(); };
 document.getElementById("send").onclick = async () => {
   const table = document.getElementById("table").value.trim();
-  if (!table) return P.toast("Zadej číslo stolu");
-  if (!lines.length) return P.toast("Objednávka je prázdná");
+  if (!table) return P.toast(T("enterTable"));
+  if (!lines.length) return P.toast(T("orderEmpty"));
   try {
     await P.post("/api/orders", { table, source: "tablet", note: document.getElementById("note").value.trim(),
       items: lines.map((l) => ({ sku: l.sku, qty: l.qty, mods: l.mods, course: l.course })) });
-    P.toast(`Stůl ${table} odeslán`);
+    P.toast(T("tableSent", { table }));
     lines = []; renderLines();
     document.getElementById("table").value = ""; document.getElementById("note").value = "";
   } catch (e) { P.toast(e.message); }
 };
-renderLines();
-P.connect(() => {});
+I18N.ready.then(() => {
+  document.title = T("newOrder") + " — Předávka";
+  renderLines();
+  P.connect(() => {});
+});
 </script>
 </body>
 </html>

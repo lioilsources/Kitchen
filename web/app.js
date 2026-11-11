@@ -85,7 +85,9 @@ const P = {
     return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   },
 
-  statusCs: {
-    HOLD: "čeká na chod", NEW: "nové", CLAIMED: "vzato", COOKING: "vaří se", READY: "hotovo",
+  // Popisek stavu položky v jazyce displeje.
+  statusLabel(s) {
+    const k = { HOLD: "statusHold", NEW: "statusNew", CLAIMED: "statusClaimed", COOKING: "statusCooking", READY: "statusReady" }[s];
+    return k ? T(k) : s;
   },
 };

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../api.dart';
+import '../l10n/gen/app_localizations.dart';
 import 'palette.dart';
 
 /// Malá tečka stavu spojení.
@@ -14,11 +15,12 @@ class StatusDot extends StatelessWidget {
     return ListenableBuilder(
       listenable: client,
       builder: (context, _) {
+        final l = AppLocalizations.of(context);
         final (color, label) = switch (client.state) {
-          _ when client.stale => (Palette.late, 'Spojení ztraceno'),
-          ConnState.connected => (Palette.ok, 'Připojeno'),
-          ConnState.connecting => (Palette.warn, 'Připojuji…'),
-          ConnState.disconnected => (Palette.late, 'Odpojeno'),
+          _ when client.stale => (Palette.late, l.connStale),
+          ConnState.connected => (Palette.ok, l.connConnected),
+          ConnState.connecting => (Palette.warn, l.connConnecting),
+          ConnState.disconnected => (Palette.late, l.connDisconnected),
         };
         return Tooltip(
           message: label,

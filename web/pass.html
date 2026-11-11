@@ -6,17 +6,18 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="bar"><h1>Předávka</h1><span class="sp"></span>
-  <button id="quiet">Tichý režim</button><button id="repeat">Ještě jednou</button><span class="dot"></span></header>
+<header class="bar"><h1 data-i18n="modePass">Předávka</h1><span class="sp"></span>
+  <button id="quiet" data-i18n="quietMode">Tichý režim</button><button id="repeat" data-i18n="repeatBtn">Ještě jednou</button><span class="dot"></span></header>
 <main><div class="pass" id="cards"></div></main>
 <div class="caption"></div>
-<div class="offline">Spojení se serverem ztraceno…</div>
+<div class="offline" data-i18n="offlineBanner">Spojení se serverem ztraceno…</div>
+<script src="i18n.js"></script>
 <script src="app.js"></script>
 <script>
 let quiet = false;
 function render(s) {
   quiet = s.quiet;
-  document.getElementById("quiet").textContent = quiet ? "Zapnout hlas" : "Tichý režim";
+  document.getElementById("quiet").textContent = quiet ? T("voiceOn") : T("quietMode");
   const byTable = {};
   for (const it of s.items) (byTable[it.table] ||= []).push(it);
   const cards = s.tables.map((t) => {
@@ -25,17 +26,17 @@ function render(s) {
     const hasReady = its.some((i) => i.status === "READY");
     const cls = t.status === "ready" ? "ready" : "";
     const alert = t.alert !== "none" ? ` ${t.alert} breathe` : "";
-    const sub = t.status === "ready" ? `hotovo ${P.mins(t.ready_wait_s)} min`
-      : t.status === "hold" ? "čeká na chod" : `≈ ${t.eta_min} min · ${t.items_ready}/${t.items_total}`;
+    const sub = t.status === "ready" ? T("readyMin", { min: P.mins(t.ready_wait_s) })
+      : t.status === "hold" ? T("statusHold") : T("approxMinCount", { min: t.eta_min, ready: t.items_ready, total: t.items_total });
     return `<div class="card ${cls}${alert}">
       <h2>${P.esc(t.table)} <small>${sub}</small></h2>
-      <ul>${its.map((i) => `<li class="${i.status}">${P.pic(i)}${i.qty}× ${P.esc(i.name)} <span class="muted">· ${P.statusCs[i.status]}${i.course > 1 ? ` · ${i.course}. chod` : ""}</span></li>`).join("")}</ul>
+      <ul>${its.map((i) => `<li class="${i.status}">${P.pic(i)}${i.qty}× ${P.esc(i.name)} <span class="muted">· ${P.statusLabel(i.status)}${i.course > 1 ? ` · ${T("courseOrd", { n: i.course })}` : ""}</span></li>`).join("")}</ul>
       <div class="actions">
-        ${hasReady ? `<button class="primary" data-t="${P.esc(t.table)}" data-a="pick">Vyzvednuto</button>` : ""}
-        ${hasHold ? `<button data-t="${P.esc(t.table)}" data-a="fire">Fire další chod</button>` : ""}
+        ${hasReady ? `<button class="primary" data-t="${P.esc(t.table)}" data-a="pick">${T("pickedUp")}</button>` : ""}
+        ${hasHold ? `<button data-t="${P.esc(t.table)}" data-a="fire">${T("fireNext")}</button>` : ""}
       </div></div>`;
   });
-  document.getElementById("cards").innerHTML = cards.join("") || `<p class="muted" style="font-size:24px">Nic na předávce.</p>`;
+  document.getElementById("cards").innerHTML = cards.join("") || `<p class="muted" style="font-size:24px">${T("nothingOnPass")}</p>`;
 }
 document.getElementById("cards").addEventListener("click", async (ev) => {
   const b = ev.target.closest("button[data-a]");
@@ -44,7 +45,10 @@ document.getElementById("cards").addEventListener("click", async (ev) => {
 });
 document.getElementById("repeat").onclick = () => P.post("/api/repeat");
 document.getElementById("quiet").onclick = () => P.post("/api/quiet", { on: !quiet });
-P.connect(render, (a) => P.caption(a.text));
+I18N.ready.then(() => {
+  document.title = T("idxPassName");
+  P.connect(render, (a) => P.caption(a.text));
+});
 </script>
 </body>
 </html>

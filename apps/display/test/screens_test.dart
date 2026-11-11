@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:predavka_display/api.dart';
+import 'package:predavka_display/l10n/gen/app_localizations.dart';
 import 'package:predavka_display/models.dart';
 import 'package:predavka_display/screens/floor.dart';
 import 'package:predavka_display/screens/kitchen.dart';
@@ -29,7 +30,14 @@ Future<void> _pump(WidgetTester tester, Widget w, Size size) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.reset);
-  await tester.pumpWidget(MaterialApp(home: Scaffold(body: w)));
+  await tester.pumpWidget(
+    MaterialApp(
+      locale: const Locale('cs'),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: Scaffold(body: w),
+    ),
+  );
   await tester.pump(const Duration(milliseconds: 500));
 }
 

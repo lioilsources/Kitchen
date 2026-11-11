@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:predavka_display/l10n/gen/app_localizations.dart';
 import 'package:predavka_display/models.dart';
 import 'package:predavka_display/screens/floor.dart';
 import 'package:predavka_display/screens/pass.dart';
@@ -199,13 +200,14 @@ void main() {
 
   group('helpers', () {
     test('formátování', () {
-      expect(etaText(6), 'za 6 min');
-      expect(etaText(0), 'za chvíli');
-      expect(durationText(30), '< 1 min');
-      expect(durationText(125), '2 min');
+      final l = lookupAppLocalizations(const Locale('cs'));
+      expect(etaText(l, 6), 'za 6 min');
+      expect(etaText(l, 0), 'za chvíli');
+      expect(durationText(l, 30), '< 1 min');
+      expect(durationText(l, 125), '2 min');
       expect(qtyName(2, 'Svíčková'), '2× Svíčková');
       expect(qtyName(1, 'Salát'), 'Salát');
-      expect(tableStatusLabel(TableStatus.ready), 'HOTOVO – vyzvedni');
+      expect(tableStatusLabel(l, TableStatus.ready), 'HOTOVO – vyzvedni');
     });
 
     test('předávka seskupí položky podle stolu', () {
@@ -225,6 +227,9 @@ void main() {
     addTearDown(tester.view.reset);
     await tester.pumpWidget(
       MaterialApp(
+        locale: const Locale('cs'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(body: FloorRow(table: s.tables[0])),
       ),
     );

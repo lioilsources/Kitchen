@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../api.dart';
+import '../l10n/gen/app_localizations.dart';
 import '../models.dart';
 import '../widgets/breathing.dart';
 import '../widgets/format.dart';
@@ -21,11 +22,12 @@ class FloorScreen extends StatelessWidget {
         return LayoutBuilder(
           builder: (context, c) {
             final scale = (c.maxWidth / 1280).clamp(0.55, 1.6);
+            final l = AppLocalizations.of(context);
             if (s == null) {
-              return _Message('Připojuji se k serveru…', scale: scale);
+              return _Message(l.connecting, scale: scale);
             }
             if (s.tables.isEmpty) {
-              return _Message('Nic se nevaří.', scale: scale);
+              return _Message(l.nothingCooking, scale: scale);
             }
             return ListView.separated(
               padding: EdgeInsets.fromLTRB(20 * scale, 8, 20 * scale, 140 * scale),
@@ -48,6 +50,7 @@ class FloorRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final t = table;
     final ready = t.status == TableStatus.ready;
     final hold = t.status == TableStatus.hold;
@@ -63,11 +66,11 @@ class FloorRow extends StatelessWidget {
 
     final String eta;
     if (ready) {
-      eta = t.readyWaitS >= 60 ? '${minutesOf(t.readyWaitS)} min' : 'teď';
+      eta = t.readyWaitS >= 60 ? l.minutesShort(minutesOf(t.readyWaitS)) : l.nowShort;
     } else if (hold) {
       eta = '';
     } else {
-      eta = etaText(t.etaMin);
+      eta = etaText(l, t.etaMin);
     }
 
     final items = t.items.map((i) => qtyName(i.qty, i.name)).join(', ');
@@ -87,7 +90,7 @@ class FloorRow extends StatelessWidget {
                 width: 150 * scale,
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
-                  alignment: Alignment.centerLeft,
+                  alignment: AlignmentDirectional.centerStart,
                   child: Text(
                     t.table,
                     maxLines: 1,
@@ -110,7 +113,7 @@ class FloorRow extends StatelessWidget {
                 flex: 3,
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
-                  alignment: Alignment.centerRight,
+                  alignment: AlignmentDirectional.centerEnd,
                   child: Text(
                     eta,
                     maxLines: 1,
@@ -126,8 +129,8 @@ class FloorRow extends StatelessWidget {
               Expanded(
                 flex: 4,
                 child: Text(
-                  tableStatusLabel(t.status) + progress,
-                  textAlign: TextAlign.right,
+                  tableStatusLabel(l, t.status) + progress,
+                  textAlign: TextAlign.end,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(

@@ -6,42 +6,43 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="bar"><h1>Nastavení</h1><span class="sp"></span><span class="muted" id="info"></span></header>
+<header class="bar"><h1 data-i18n="settingsPage">Nastavení</h1><span class="sp"></span><span class="muted" id="info"></span></header>
 <main class="grid2">
   <section class="panel">
-    <h2 style="margin-top:0;font-size:18px">Prahy a hlas</h2>
+    <h2 style="margin-top:0;font-size:18px" data-i18n="thresholdsVoice">Prahy a hlas</h2>
     <form id="settings"></form>
-    <div class="form-row"><button class="primary" id="save">Uložit</button></div>
-    <p class="muted">Doby zadávej jako <code>90s</code>, <code>2m</code>, <code>1m30s</code>.</p>
+    <div class="form-row"><button class="primary" id="save" data-i18n="saveBtn">Uložit</button></div>
+    <p class="muted" data-i18n-html="durationsHint">Doby zadávej jako <code>90s</code>, <code>2m</code>, <code>1m30s</code>.</p>
   </section>
   <section class="panel">
-    <h2 style="margin-top:0;font-size:18px">Doby přípravy</h2>
-    <p class="muted">Statický odhad šéfkuchaře platí, dokud položka nemá aspoň 5 změřených vaření.</p>
-    <table class="data"><thead><tr><th>Položka</th><th>Stanice</th><th>Odhad p50/p90</th><th>Naměřeno p50/p90</th><th>n</th></tr></thead>
+    <h2 style="margin-top:0;font-size:18px" data-i18n="prepTimes">Doby přípravy</h2>
+    <p class="muted" data-i18n="prepHint">Statický odhad šéfkuchaře platí, dokud položka nemá aspoň 5 změřených vaření.</p>
+    <table class="data"><thead><tr><th data-i18n="thItem">Položka</th><th data-i18n="thStation">Stanice</th><th data-i18n="thEstimate">Odhad p50/p90</th><th data-i18n="thMeasured">Naměřeno p50/p90</th><th>n</th></tr></thead>
     <tbody id="prep"></tbody></table>
   </section>
 </main>
 <div class="toast"></div>
+<script src="i18n.js"></script>
 <script src="app.js"></script>
 <script>
 const fields = [
-  ["wait_to_claim", "Čekání na kuchaře", "dur"],
-  ["cook_overrun_factor", "Přetažení vaření (× p90)", "num"],
-  ["pass_aging", "Stárnutí na předávce", "dur"],
-  ["reannounce_aging", "Opakovat stárnutí po", "dur"],
-  ["course_gap", "Mezera mezi chody", "dur"],
-  ["auto_fire", "Automatický fire chodu", "bool"],
-  ["announce_min_gap", "Min. mezera mezi hláškami", "dur"],
-  ["eta_refresh", "Obnova ETA na place", "dur"],
-  ["quiet", "Tichý režim (bez hlasu)", "bool"],
+  ["wait_to_claim", "fWaitToClaim", "dur"],
+  ["cook_overrun_factor", "fCookOverrun", "num"],
+  ["pass_aging", "fPassAging", "dur"],
+  ["reannounce_aging", "fReannounce", "dur"],
+  ["course_gap", "fCourseGap", "dur"],
+  ["auto_fire", "fAutoFire", "bool"],
+  ["announce_min_gap", "fAnnounceGap", "dur"],
+  ["eta_refresh", "fEtaRefresh", "dur"],
+  ["quiet", "fQuiet", "bool"],
 ];
 const fmt = (ns) => { const s = Math.round(ns / 1e9); return s >= 60 ? `${Math.floor(s / 60)}m${s % 60 ? (s % 60) + "s" : ""}` : `${s}s`; };
 async function load() {
   const s = await P.get("/api/settings");
-  document.getElementById("settings").innerHTML = fields.map(([k, label, t]) => `<div class="form-row"><label for="${k}">${label}</label>${
+  document.getElementById("settings").innerHTML = fields.map(([k, label, t]) => `<div class="form-row"><label for="${k}">${T(label)}</label>${
     t === "bool" ? `<input type="checkbox" id="${k}" ${s[k] ? "checked" : ""}>` : `<input id="${k}" value="${P.esc(s[k])}" size="8">`}</div>`).join("");
   const st = await P.get("/api/stats");
-  document.getElementById("info").textContent = `displeje: ${st.displays} · latence hlasu: ${st.voice_latency_ms} ms`;
+  document.getElementById("info").textContent = T("adminInfo", { displays: st.displays, ms: st.voice_latency_ms });
   document.getElementById("prep").innerHTML = st.prep.map((p) => `<tr><td>${P.esc(p.name)}</td><td>${P.esc(p.station)}</td>
     <td>${fmt(p.static_p50_ns)} / ${fmt(p.static_p90_ns)}</td>
     <td>${p.n ? `${fmt(p.learned_p50_ns)} / ${fmt(p.learned_p90_ns)}` : "–"}${p.using === "learned" ? " ✓" : ""}</td><td>${p.n}</td></tr>`).join("");
@@ -54,10 +55,13 @@ document.getElementById("save").onclick = async () => {
   }
   const r = await fetch("/api/settings", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
   const d = await r.json();
-  P.toast(r.ok ? "Uloženo" : d.error);
+  P.toast(r.ok ? T("saved") : d.error);
   if (r.ok) load();
 };
-load();
+I18N.ready.then(() => {
+  document.title = T("settingsPage") + " — Předávka";
+  load();
+});
 </script>
 </body>
 </html>

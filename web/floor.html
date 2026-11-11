@@ -6,23 +6,24 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="bar"><h1>Plac</h1><span class="sp"></span><span class="muted" id="clock"></span><span class="dot"></span></header>
-<main class="floor"><table><tbody id="rows"></tbody></table><div id="empty" class="empty" hidden><img class="empty-art" src="art/chef.png" alt="" onerror="this.remove()">Vše vydáno.</div></main>
+<header class="bar"><h1 data-i18n="modeFloor">Plac</h1><span class="sp"></span><span class="muted" id="clock"></span><span class="dot"></span></header>
+<main class="floor"><table><tbody id="rows"></tbody></table><div id="empty" class="empty" hidden><img class="empty-art" src="art/chef.png" alt="" onerror="this.remove()"><span data-i18n="allServed">Vše vydáno.</span></div></main>
 <div class="caption"></div>
-<div class="offline">Spojení se serverem ztraceno…</div>
+<div class="offline" data-i18n="offlineBanner">Spojení se serverem ztraceno…</div>
+<script src="i18n.js"></script>
 <script src="app.js"></script>
 <script>
 function state(t) {
   switch (t.status) {
-    case "ready": return { eta: "", label: "HOTOVO – vyzvedni" + (t.ready_wait_s >= 60 ? ` · ${P.mins(t.ready_wait_s)} min` : "") };
-    case "partial": return { eta: t.eta_min > 0 ? `za ${t.eta_min} min` : "chvíli", label: `částečně ${t.items_ready}/${t.items_total}` };
-    case "hold": return { eta: "", label: "čeká na chod" };
-    case "waiting": return { eta: `za ${t.eta_min} min`, label: "ve frontě" };
-    default: return { eta: t.eta_min > 0 ? `za ${t.eta_min} min` : "chvíli", label: "vaří se" };
+    case "ready": return { eta: "", label: T("tableReady") + (t.ready_wait_s >= 60 ? ` · ${T("minutesShort", { min: P.mins(t.ready_wait_s) })}` : "") };
+    case "partial": return { eta: t.eta_min > 0 ? T("etaInMin", { min: t.eta_min }) : T("etaSoon"), label: T("partialCount", { ready: t.items_ready, total: t.items_total }) };
+    case "hold": return { eta: "", label: T("statusHold") };
+    case "waiting": return { eta: T("etaInMin", { min: t.eta_min }), label: T("tableWaiting") };
+    default: return { eta: t.eta_min > 0 ? T("etaInMin", { min: t.eta_min }) : T("etaSoon"), label: T("statusCooking") };
   }
 }
 function render(s) {
-  document.getElementById("clock").textContent = new Date(s.now).toLocaleTimeString("cs-CZ", { hour: "2-digit", minute: "2-digit" });
+  document.getElementById("clock").textContent = new Date(s.now).toLocaleTimeString(I18N.locale, { hour: "2-digit", minute: "2-digit" });
   const rows = s.tables.map((t) => {
     const st = state(t);
     const items = t.items.map((i) => `${P.pic(i)}${i.qty}× ${P.esc(i.name)}`).join(", ");
@@ -33,7 +34,10 @@ function render(s) {
   document.getElementById("rows").innerHTML = rows.join("");
   document.getElementById("empty").hidden = rows.length > 0;
 }
-P.connect(render, (a) => P.caption(a.text));
+I18N.ready.then(() => {
+  document.title = T("modeFloor") + " — Předávka";
+  P.connect(render, (a) => P.caption(a.text));
+});
 </script>
 </body>
 </html>

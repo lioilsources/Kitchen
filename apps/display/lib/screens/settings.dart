@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../api.dart';
+import '../l10n/gen/app_localizations.dart';
 import '../models.dart';
 import '../settings.dart';
 import '../widgets/palette.dart';
@@ -25,7 +26,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late String _station = widget.initial.station;
 
   List<Station>? _stations;
-  String? _error;
+  ApiException? _error;
   bool _loading = false;
 
   @override
@@ -57,7 +58,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         if (_station.isEmpty && s.stations.isNotEmpty) _station = s.stations.first.id;
       });
     } on ApiException catch (e) {
-      if (mounted) setState(() => _error = '${e.message} – stanici můžete zadat ručně.');
+      if (mounted) setState(() => _error = e);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -78,17 +79,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     const label = TextStyle(fontSize: 18, color: Palette.textDim, fontWeight: FontWeight.w600);
     final stations = _stations;
     final needsStation = _mode == DisplayMode.kitchen;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nastavení displeje'),
+        title: Text(l.settingsTitle),
         backgroundColor: Palette.background,
         leading: widget.onCancel == null
             ? null
-            : IconButton(icon: const Icon(Icons.close), onPressed: widget.onCancel, tooltip: 'Zpět'),
+            : IconButton(icon: const Icon(Icons.close), onPressed: widget.onCancel, tooltip: l.back),
       ),
       body: Center(
         child: ConstrainedBox(
@@ -96,7 +98,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: ListView(
             padding: const EdgeInsets.all(24),
             children: [
-              const Text('Server', style: label),
+              Text(l.server, style: label),
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -117,37 +119,41 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     onPressed: _loading ? null : _loadStations,
                     child: _loading
                         ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
-                        : const Text('Načíst stanice'),
+                        : Text(l.loadStations),
                   ),
                 ],
               ),
               if (_error != null) ...[
                 const SizedBox(height: 8),
-                Text(_error!, style: const TextStyle(color: Palette.warn)),
+                Text(l.stationsLoadFailed(_error!.localized(l)), style: const TextStyle(color: Palette.warn)),
               ],
               const SizedBox(height: 28),
-              const Text('Režim', style: label),
+              Text(l.modeLabel, style: label),
               const SizedBox(height: 8),
               SegmentedButton<DisplayMode>(
-                segments: const [
+                segments: [
                   ButtonSegment(
                     value: DisplayMode.kitchen,
-                    label: Text('Kuchyň'),
-                    icon: Icon(Icons.soup_kitchen_outlined),
+                    label: Text(l.modeKitchen),
+                    icon: const Icon(Icons.soup_kitchen_outlined),
                   ),
                   ButtonSegment(
                     value: DisplayMode.pass,
-                    label: Text('Předávka'),
-                    icon: Icon(Icons.room_service_outlined),
+                    label: Text(l.modePass),
+                    icon: const Icon(Icons.room_service_outlined),
                   ),
-                  ButtonSegment(value: DisplayMode.floor, label: Text('Plac'), icon: Icon(Icons.tv_outlined)),
+                  ButtonSegment(
+                    value: DisplayMode.floor,
+                    label: Text(l.modeFloor),
+                    icon: const Icon(Icons.tv_outlined),
+                  ),
                 ],
                 selected: {_mode},
                 onSelectionChanged: (s) => setState(() => _mode = s.first),
               ),
               if (needsStation) ...[
                 const SizedBox(height: 28),
-                const Text('Stanice', style: label),
+                Text(l.stationLabel, style: label),
                 const SizedBox(height: 8),
                 if (stations != null && stations.isNotEmpty)
                   DropdownButtonFormField<String>(
@@ -162,17 +168,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   TextField(
                     controller: _stationText,
                     autocorrect: false,
-                    decoration: const InputDecoration(border: OutlineInputBorder(), hintText: 'např. gril'),
+                    decoration: InputDecoration(border: const OutlineInputBorder(), hintText: l.stationExample),
                   ),
                 const SizedBox(height: 28),
-                const Text('Jméno kuchaře (volitelné)', style: label),
+                Text(l.cookNameOptional, style: label),
                 const SizedBox(height: 8),
                 TextField(
                   controller: _cook,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'prázdné = bumpuje se za stanici',
-                  ),
+                  decoration: InputDecoration(border: const OutlineInputBorder(), hintText: l.cookNameHint),
                 ),
               ],
               const SizedBox(height: 36),
@@ -182,13 +185,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 18),
                   textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 ),
-                child: const Text('Uložit a spustit'),
+                child: Text(l.saveAndStart),
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Nastavení otevřete kdykoli dlouhým stiskem na název nahoře.',
-                style: TextStyle(color: Palette.textFaint),
-              ),
+              Text(l.settingsHowTo, style: const TextStyle(color: Palette.textFaint)),
             ],
           ),
         ),
