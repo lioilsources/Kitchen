@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'api.dart';
+import 'l10n/gen/app_localizations.dart';
+import 'widgets/format.dart';
 import 'screens/floor.dart';
 import 'screens/kitchen.dart';
 import 'screens/pass.dart';
@@ -83,7 +86,15 @@ class _PredavkaAppState extends State<PredavkaApp> {
   Widget build(BuildContext context) {
     final client = _client;
     return MaterialApp(
+      // Název aplikace je značka a nepřekládá se.
       title: 'Předávka',
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
       theme: buildTheme(),
       darkTheme: buildTheme(),
@@ -139,9 +150,9 @@ class HomeScreen extends StatelessWidget {
                 child: Stack(
                   children: [
                     Positioned.fill(child: body),
-                    Positioned(
-                      left: 0,
-                      right: 0,
+                    PositionedDirectional(
+                      start: 0,
+                      end: 0,
                       bottom: 0,
                       child: Center(
                         child: AnnounceCaption(client: client, fontSize: settings.mode == DisplayMode.floor ? 40 : 26),
@@ -172,8 +183,9 @@ class _TopBar extends StatelessWidget {
       listenable: client,
       builder: (context, _) {
         final s = client.snapshot;
+        final l = AppLocalizations.of(context);
         // Režim předávky se jmenuje stejně jako aplikace — nepsat to dvakrát.
-        final parts = <String>[if (settings.mode != DisplayMode.pass) 'Předávka', settings.mode.label];
+        final parts = <String>[if (settings.mode != DisplayMode.pass) 'Předávka', displayModeLabel(l, settings.mode)];
         if (settings.mode == DisplayMode.kitchen && settings.station.isNotEmpty) {
           parts.add(s?.stationName(settings.station) ?? settings.station);
           if (settings.cook.isNotEmpty) parts.add(settings.cook);

@@ -87,6 +87,21 @@ sudo cp deploy/predavka.service /etc/systemd/system/ && sudo systemctl enable --
 Snapcast a reproduktory: [`deploy/snapcast.md`](deploy/snapcast.md). Displeje: Android TV/tablet s Flutter
 aplikací, nebo prohlížeč na `http://predavka.local:8080/floor.html`.
 
+## Jazyky displejů
+
+Displeje (Flutter aplikace i webové stránky) mají rozhraní ve 45 jazycích (cs, en, ar, bn, ca, da, de, el, es, fi,
+fr, gu, he, hi, hr, hu, id, it, ja, kn, ko, ml, mr, ms, nb, nl, or, pa, pl, pt-BR, pt-PT, ro, ru, sk, sl, sv, ta,
+te, th, tr, uk, ur, vi, zh-Hans, zh-Hant; RTL: ar, he, ur). Jazyk se řídí zařízením nebo prohlížečem; na webu ho jde
+přepnout na rozcestníku (`/`) nebo přes `?lang=de`.
+
+- Flutter: `apps/display/lib/l10n/app_*.arb` (zdroj `app_cs.arb`), `flutter gen-l10n` běží s `flutter pub get`.
+- Web: `web/i18n/<jazyk>.json` (zdroj `cs.json`), načítá `web/i18n.js`; test `web/i18n_test.go` hlídá shodu klíčů.
+- Strojové překlady, k revizi rodilými mluvčími.
+- **Zůstává česky:** hlasové hlášky a titulek hlášek (`internal/tts`, český hlas Piper), chybové zprávy serveru a
+  názvy položek menu/stanic z konfigurace. Značka „Předávka“ se nepřekládá.
+- Webové displeje spoléhají na systémové fonty; Flutter web build bez internetu nemá fonty pro některá písma (indická,
+  thajština, arabština, CJK), nativní aplikace (Android, macOS) používají systémové fonty.
+
 ## Testy
 
 ```bash

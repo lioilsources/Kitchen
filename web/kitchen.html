@@ -7,14 +7,15 @@
 </head>
 <body>
 <header class="bar">
-  <h1 id="title">Kuchyň</h1><span class="muted" id="summary"></span><span class="sp"></span>
+  <h1 id="title" data-i18n="modeKitchen">Kuchyň</h1><span class="muted" id="summary"></span><span class="sp"></span>
   <span class="muted" id="cook"></span>
-  <button id="repeat" title="R">Ještě jednou</button>
+  <button id="repeat" title="R" data-i18n="repeatBtn">Ještě jednou</button>
   <span class="dot"></span>
 </header>
 <main><div class="tickets" id="tickets"></div></main>
 <div class="caption"></div>
-<div class="offline">Spojení se serverem ztraceno…</div>
+<div class="offline" data-i18n="offlineBanner">Spojení se serverem ztraceno…</div>
+<script src="i18n.js"></script>
 <script src="app.js"></script>
 <script>
 const station = P.params.get("station") || "";
@@ -28,20 +29,20 @@ function card(it, i) {
   let meta;
   switch (it.status) {
     case "NEW":
-      meta = `<span>čeká ${wait} min</span><span>${it.start_in_min > 0 ? `začít za ${it.start_in_min} min` : `≈ ${it.eta_min} min`}</span>`;
+      meta = `<span>${T("waitingMin", { min: wait })}</span><span>${it.start_in_min > 0 ? T("startInMin", { min: it.start_in_min }) : T("approxMin", { min: it.eta_min })}</span>`;
       break;
     case "CLAIMED": case "COOKING":
-      meta = `<span>vaří ${wait} min${it.claimed_by && it.claimed_by !== station ? " · " + P.esc(it.claimed_by) : ""}</span><span>zbývá ≈ ${it.eta_min} min</span>`;
+      meta = `<span>${T("cookingMin", { min: wait })}${it.claimed_by && it.claimed_by !== station ? " · " + P.esc(it.claimed_by) : ""}</span><span>${T("remainingMin", { min: it.eta_min })}</span>`;
       break;
     case "READY":
-      meta = `<span>na předávce ${wait} min</span><span></span>`;
+      meta = `<span>${T("onPassMin", { min: wait })}</span><span></span>`;
       break;
     default:
-      meta = `<span>${P.statusCs[it.status] || it.status}</span><span>${it.course}. chod</span>`;
+      meta = `<span>${P.statusLabel(it.status)}</span><span>${T("courseOrd", { n: it.course })}</span>`;
   }
   return `<div class="ticket ${it.status} ${it.alert}${breathe}${i === selected ? " selected" : ""}" data-i="${i}">
     ${i < 9 && it.status !== "READY" && it.status !== "HOLD" ? `<span class="idx">${i + 1}</span>` : ""}
-    <div class="status-chip">${P.statusCs[it.status] || it.status}</div>
+    <div class="status-chip">${P.statusLabel(it.status)}</div>
     <div class="table">${P.esc(it.table)}</div>
     <div class="name">${P.pic(it)}${it.qty}× ${P.esc(it.name)}</div>
     ${it.mods.length ? `<div class="mods">${it.mods.map(P.esc).join(", ")}</div>` : ""}
@@ -52,7 +53,7 @@ function card(it, i) {
 
 function render(s) {
   const st = s.stations.find((x) => x.id === station);
-  document.getElementById("title").textContent = st ? st.name : "Kuchyň (vyber stanici)";
+  document.getElementById("title").textContent = st ? st.name : T("pickStationTitle");
   const mine = s.items.filter((it) => !station || it.station === station);
   const rank = { CLAIMED: 0, COOKING: 0, NEW: 1, HOLD: 2, READY: 3 };
   mine.sort((a, b) => rank[a.status] - rank[b.status]);
@@ -61,9 +62,9 @@ function render(s) {
   selected = prevId ? tickets.findIndex((t) => t.id === prevId) : -1;
   const nNew = mine.filter((i) => i.status === "NEW").length;
   const nCook = mine.filter((i) => i.status === "CLAIMED" || i.status === "COOKING").length;
-  document.getElementById("summary").textContent = `${nNew} čeká · ${nCook} vaří`;
+  document.getElementById("summary").textContent = T("summaryNewCooking", { new: nNew, cooking: nCook });
   document.getElementById("tickets").innerHTML = mine.map(card).join("") ||
-    `<div style="grid-column:1/-1"><img class="empty-art" src="art/chef.png" alt="" onerror="this.remove()"><p class="muted" style="font-size:24px;text-align:center">Fronta je prázdná.</p></div>`;
+    `<div style="grid-column:1/-1"><img class="empty-art" src="art/chef.png" alt="" onerror="this.remove()"><p class="muted" style="font-size:24px;text-align:center">${T("queueEmpty")}</p></div>`;
 }
 
 async function bump(i) {
@@ -95,7 +96,10 @@ document.addEventListener("keydown", (ev) => {
   document.querySelectorAll(".ticket").forEach((el) => el.classList.toggle("selected", +el.dataset.i === selected));
 });
 
-P.connect(render, (a) => P.caption(a.text));
+I18N.ready.then(() => {
+  document.title = T("modeKitchen") + " — Předávka";
+  P.connect(render, (a) => P.caption(a.text));
+});
 </script>
 </body>
 </html>

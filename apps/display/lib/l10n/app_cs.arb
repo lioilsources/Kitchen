@@ -1,0 +1,143 @@
+{
+  "@@locale": "cs",
+  "modeKitchen": "Kuchyň",
+  "modePass": "Předávka",
+  "modeFloor": "Plac",
+  "connecting": "Připojuji se k serveru…",
+  "connConnecting": "Připojuji…",
+  "connConnected": "Připojeno",
+  "connDisconnected": "Odpojeno",
+  "connStale": "Spojení ztraceno",
+  "connLostTitle": "Spojení se serverem ztraceno",
+  "connTryingTo": "Zkouším se připojit k {url}",
+  "@connTryingTo": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "connLastKnown": "Zobrazuji poslední známý stav. Zkouším se znovu připojit…",
+  "etaSoon": "za chvíli",
+  "etaInMin": "za {min} min",
+  "@etaInMin": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "nowShort": "teď",
+  "minutesShort": "{min} min",
+  "@minutesShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "lessThanMinute": "< 1 min",
+  "statusHold": "čeká na chod",
+  "statusNew": "nové",
+  "statusClaimed": "převzato",
+  "statusCooking": "vaří se",
+  "statusReady": "hotovo",
+  "tableWaiting": "ve frontě",
+  "tablePartial": "částečně",
+  "tableReady": "HOTOVO – vyzvedni",
+  "actionFailed": "Nepodařilo se: {message}",
+  "@actionFailed": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "pickStationHint": "Vyberte stanici v nastavení (dlouhý stisk na název nahoře).",
+  "queueEmpty": "Fronta je prázdná. Klid.",
+  "nothingCooking": "Nic se nevaří.",
+  "atPass": "Na předávce",
+  "passEmpty": "Předávka je prázdná.",
+  "atPassFor": "na předávce {duration}",
+  "@atPassFor": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "tapPickedUp": "Klepni = vyzvednuto",
+  "fire": "Fire",
+  "startInMin": "začít za {min} min",
+  "@startInMin": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "waiting": "čeká",
+  "waitingFor": "čeká {duration}",
+  "@waitingFor": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "cookingFor": "vaří {duration}",
+  "@cookingFor": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "courseWord": "chod {n}",
+  "@courseWord": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "held": "drženo",
+  "readyAtEta": "hotovo {eta}",
+  "@readyAtEta": {
+    "placeholders": {
+      "eta": {
+        "type": "String"
+      }
+    }
+  },
+  "apiNoResponse": "Server neodpovídá",
+  "apiUnavailable": "Server není dostupný",
+  "apiInvalidResponse": "Neplatná odpověď serveru",
+  "apiHttpError": "Chyba {code}",
+  "@apiHttpError": {
+    "placeholders": {
+      "code": {
+        "type": "int"
+      }
+    }
+  },
+  "settingsTitle": "Nastavení displeje",
+  "back": "Zpět",
+  "server": "Server",
+  "loadStations": "Načíst stanice",
+  "stationsLoadFailed": "{message} – stanici můžete zadat ručně.",
+  "@stationsLoadFailed": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "modeLabel": "Režim",
+  "stationLabel": "Stanice",
+  "stationExample": "např. gril",
+  "cookNameOptional": "Jméno kuchaře (volitelné)",
+  "cookNameHint": "prázdné = bumpuje se za stanici",
+  "saveAndStart": "Uložit a spustit",
+  "settingsHowTo": "Nastavení otevřete kdykoli dlouhým stiskem na název nahoře."
+}

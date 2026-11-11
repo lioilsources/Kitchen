@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../api.dart';
+import '../l10n/gen/app_localizations.dart';
 import 'palette.dart';
 
 /// Překryv "Spojení se serverem ztraceno" – poslední data zůstávají vidět pod ním.
@@ -14,6 +15,7 @@ class ConnectionOverlay extends StatelessWidget {
     return ListenableBuilder(
       listenable: client,
       builder: (context, _) {
+        final l = AppLocalizations.of(context);
         final show = client.stale;
         return IgnorePointer(
           ignoring: !show,
@@ -33,16 +35,14 @@ class ConnectionOverlay extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      'Spojení se serverem ztraceno',
+                    Text(
+                      l.connLostTitle,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600, color: Palette.text),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      client.snapshot == null
-                          ? 'Zkouším se připojit k ${client.baseUrl}'
-                          : 'Zobrazuji poslední známý stav. Zkouším se znovu připojit…',
+                      client.snapshot == null ? l.connTryingTo(client.baseUrl) : l.connLastKnown,
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 18, color: Palette.textDim),
                     ),

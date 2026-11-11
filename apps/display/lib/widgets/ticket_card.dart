@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/gen/app_localizations.dart';
 import '../models.dart';
 import 'breathing.dart';
 import 'format.dart';
@@ -28,16 +29,17 @@ class TicketCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final hold = item.status == ItemStatus.hold;
     final isNew = item.status == ItemStatus.newItem;
     final alertColor = hold ? null : Palette.alertColor(item.alert);
     final base = isNew ? Color.alphaBlend(Palette.newItem.withValues(alpha: 0.06), Palette.surface) : Palette.surface;
 
     final waitLabel = switch (item.status) {
-      ItemStatus.newItem => 'čeká ${durationText(item.waitS)}',
-      ItemStatus.claimed || ItemStatus.cooking => 'vaří ${durationText(item.waitS)}',
-      ItemStatus.hold => 'chod ${item.course}',
-      _ => durationText(item.waitS),
+      ItemStatus.newItem => l.waitingFor(durationText(l, item.waitS)),
+      ItemStatus.claimed || ItemStatus.cooking => l.cookingFor(durationText(l, item.waitS)),
+      ItemStatus.hold => l.courseWord(item.course),
+      _ => durationText(l, item.waitS),
     };
 
     final borderColor = flash
@@ -69,7 +71,7 @@ class TicketCard extends StatelessWidget {
               children: [
                 if (index != null)
                   Container(
-                    margin: const EdgeInsets.only(right: 12, top: 10),
+                    margin: const EdgeInsetsDirectional.only(end: 12, top: 10),
                     width: 34,
                     height: 34,
                     alignment: Alignment.center,
@@ -89,7 +91,7 @@ class TicketCard extends StatelessWidget {
                 Expanded(
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
-                    alignment: Alignment.centerLeft,
+                    alignment: AlignmentDirectional.centerStart,
                     child: Text(
                       item.table,
                       style: const TextStyle(
@@ -119,7 +121,7 @@ class TicketCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        _rightSub(),
+                        _rightSub(l),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(fontSize: 18, color: Palette.textDim),
@@ -151,7 +153,7 @@ class TicketCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  itemStatusLabel(item.status),
+                  itemStatusLabel(l, item.status),
                   style: TextStyle(
                     fontSize: 18,
                     color: isNew ? Palette.newItem : Palette.textDim,
@@ -187,12 +189,12 @@ class TicketCard extends StatelessWidget {
     );
   }
 
-  String _rightSub() {
-    if (item.status == ItemStatus.hold) return 'drženo';
+  String _rightSub(AppLocalizations l) {
+    if (item.status == ItemStatus.hold) return l.held;
     if (item.status == ItemStatus.newItem && item.startInMin > 0) {
-      return 'začít za ${item.startInMin} min';
+      return l.startInMin(item.startInMin);
     }
-    return 'hotovo ${etaText(item.etaMin)}';
+    return l.readyAtEta(etaText(l, item.etaMin));
   }
 }
 
@@ -205,6 +207,7 @@ class ReadyChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final alert = Palette.alertColor(item.alert);
     return Material(
       color: Colors.transparent,
@@ -235,7 +238,7 @@ class ReadyChip extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  'na předávce ${durationText(item.waitS)}',
+                  l.atPassFor(durationText(l, item.waitS)),
                   style: TextStyle(fontSize: 16, color: alert ?? Palette.textFaint),
                 ),
               ],

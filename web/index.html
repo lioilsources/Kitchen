@@ -6,26 +6,30 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="bar"><h1>Předávka</h1><span class="sp"></span><span class="dot"></span></header>
+<header class="bar"><h1>Předávka</h1><span class="sp"></span><select id="lang" title="Language" aria-label="Language"></select><span class="dot"></span></header>
 <main style="max-width:720px">
   <div class="links" id="links">
-    <a href="floor.html">Plac<small>Displej pro obsluhu: stůl, ETA, co vyzvednout. Bez ovládání.</small></a>
-    <a href="pass.html">Předávka (expo)<small>Sestavení stolů, vyzvednutí, fire dalšího chodu.</small></a>
-    <a href="tablet.html">Tablet obsluhy<small>Zadání objednávky.</small></a>
-    <a href="admin.html">Nastavení<small>Prahy, tichý režim, doby přípravy.</small></a>
+    <a href="floor.html"><span data-i18n="modeFloor">Plac</span><small data-i18n="idxFloorDesc">Displej pro obsluhu: stůl, ETA, co vyzvednout. Bez ovládání.</small></a>
+    <a href="pass.html"><span data-i18n="idxPassName">Předávka (expo)</span><small data-i18n="idxPassDesc">Sestavení stolů, vyzvednutí, fire dalšího chodu.</small></a>
+    <a href="tablet.html"><span data-i18n="idxTabletName">Tablet obsluhy</span><small data-i18n="idxTabletDesc">Zadání objednávky.</small></a>
+    <a href="admin.html"><span data-i18n="idxSettingsName">Nastavení</span><small data-i18n="idxSettingsDesc">Prahy, tichý režim, doby přípravy.</small></a>
   </div>
-  <h2 class="muted" style="font-size:16px;font-weight:500">Kuchyňské stanice</h2>
+  <h2 class="muted" style="font-size:16px;font-weight:500" data-i18n="idxStations">Kuchyňské stanice</h2>
   <div class="links" id="stations"></div>
 </main>
-<div class="offline">Spojení se serverem ztraceno…</div>
+<div class="offline" data-i18n="offlineBanner">Spojení se serverem ztraceno…</div>
+<script src="i18n.js"></script>
 <script src="app.js"></script>
 <script>
-P.get("/api/state").then((s) => {
-  document.getElementById("stations").innerHTML = s.stations
-    .map((st) => `<a href="kitchen.html?station=${encodeURIComponent(st.id)}">${P.esc(st.name)}<small>Fronta stanice, claim tapnutím nebo bump barem.</small></a>`)
-    .join("");
+I18N.ready.then(() => {
+  I18N.picker(document.getElementById("lang"));
+  P.get("/api/state").then((s) => {
+    document.getElementById("stations").innerHTML = s.stations
+      .map((st) => `<a href="kitchen.html?station=${encodeURIComponent(st.id)}">${P.esc(st.name)}<small>${T("idxStationDesc")}</small></a>`)
+      .join("");
+  });
+  P.connect(() => {});
 });
-P.connect(() => {});
 </script>
 </body>
 </html>

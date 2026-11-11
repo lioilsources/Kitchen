@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../api.dart';
+import '../l10n/gen/app_localizations.dart';
 import '../models.dart';
 import '../widgets/breathing.dart';
 import '../widgets/format.dart';
@@ -56,11 +57,12 @@ class _PassScreenState extends State<PassScreen> {
       await action();
     } on ApiException catch (e) {
       if (mounted) {
+        final l = AppLocalizations.of(context);
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
           ..showSnackBar(
             SnackBar(
-              content: Text('Nepodařilo se: ${e.message}', style: const TextStyle(fontSize: 18)),
+              content: Text(l.actionFailed(e.localized(l)), style: const TextStyle(fontSize: 18)),
               backgroundColor: Palette.surfaceHigh,
             ),
           );
@@ -75,16 +77,17 @@ class _PassScreenState extends State<PassScreen> {
     return ListenableBuilder(
       listenable: widget.client,
       builder: (context, _) {
+        final l = AppLocalizations.of(context);
         final s = widget.client.snapshot;
         if (s == null) {
-          return const Center(
-            child: Text('Připojuji se k serveru…', style: TextStyle(fontSize: 28, color: Palette.textDim)),
+          return Center(
+            child: Text(l.connecting, style: const TextStyle(fontSize: 28, color: Palette.textDim)),
           );
         }
         final groups = groupForPass(s);
         if (groups.isEmpty) {
-          return const Center(
-            child: Text('Předávka je prázdná.', style: TextStyle(fontSize: 28, color: Palette.textDim)),
+          return Center(
+            child: Text(l.passEmpty, style: const TextStyle(fontSize: 28, color: Palette.textDim)),
           );
         }
         return LayoutBuilder(
@@ -142,6 +145,7 @@ class _PassCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final v = group.view;
     final complete = v?.status == TableStatus.ready;
     final alert = Palette.alertColor(v?.alert ?? Alert.none);
@@ -161,7 +165,7 @@ class _PassCard extends StatelessWidget {
             children: [
               if (v != null)
                 Text(
-                  tableStatusLabel(v.status),
+                  tableStatusLabel(l, v.status),
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
@@ -169,10 +173,10 @@ class _PassCard extends StatelessWidget {
                   ),
                 ),
               if (v != null && !complete && v.status != TableStatus.hold)
-                Text(etaText(v.etaMin), style: const TextStyle(fontSize: 20, color: Palette.textDim)),
+                Text(etaText(l, v.etaMin), style: const TextStyle(fontSize: 20, color: Palette.textDim)),
               if (v != null && v.readyWaitS > 0)
                 Text(
-                  'na předávce ${durationText(v.readyWaitS)}',
+                  l.atPassFor(durationText(l, v.readyWaitS)),
                   style: TextStyle(fontSize: 18, color: alert ?? Palette.textDim),
                 ),
             ],
@@ -210,13 +214,13 @@ class _PassCard extends StatelessWidget {
               children: [
                 header,
                 const SizedBox(height: 12),
-                for (final it in group.items) _line(it),
+                for (final it in group.items) _line(l, it),
                 if (onPick != null || onFire != null) ...[
                   const SizedBox(height: 14),
                   Row(
                     children: [
                       if (onPick != null)
-                        const Text('Klepni = vyzvednuto', style: TextStyle(fontSize: 16, color: Palette.textFaint)),
+                        Text(l.tapPickedUp, style: const TextStyle(fontSize: 16, color: Palette.textFaint)),
                       const Spacer(),
                       if (onFire != null)
                         FilledButton.tonal(
@@ -225,7 +229,7 @@ class _PassCard extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                             textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                           ),
-                          child: const Text('Fire'),
+                          child: Text(l.fire),
                         ),
                     ],
                   ),
@@ -238,12 +242,12 @@ class _PassCard extends StatelessWidget {
     );
   }
 
-  Widget _line(ItemView it) {
+  Widget _line(AppLocalizations l, ItemView it) {
     final (color, right) = switch (it.status) {
-      ItemStatus.ready => (Palette.ready, 'hotovo'),
-      ItemStatus.hold => (Palette.textFaint, 'chod ${it.course}'),
-      ItemStatus.newItem => (Palette.textDim, it.startInMin > 0 ? 'začít za ${it.startInMin} min' : 'čeká'),
-      _ => (Palette.text, etaText(it.etaMin)),
+      ItemStatus.ready => (Palette.ready, l.statusReady),
+      ItemStatus.hold => (Palette.textFaint, l.courseWord(it.course)),
+      ItemStatus.newItem => (Palette.textDim, it.startInMin > 0 ? l.startInMin(it.startInMin) : l.waiting),
+      _ => (Palette.text, etaText(l, it.etaMin)),
     };
     final itemAlert = it.status == ItemStatus.hold ? null : Palette.alertColor(it.alert);
     return Padding(
@@ -253,7 +257,7 @@ class _PassCard extends StatelessWidget {
           Container(
             width: 10,
             height: 10,
-            margin: const EdgeInsets.only(right: 10),
+            margin: const EdgeInsetsDirectional.only(end: 10),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: it.status == ItemStatus.ready ? Palette.ready : Colors.transparent,

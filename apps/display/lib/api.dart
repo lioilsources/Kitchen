@@ -6,13 +6,29 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+import 'l10n/gen/app_localizations.dart';
 import 'models.dart';
 
 enum ConnState { connecting, connected, disconnected }
 
+/// Druh chyby klienta; zprávy ze serveru (`failure == server`) se zobrazují tak, jak přišly.
+enum ApiFailure { noResponse, unavailable, invalidResponse, http, server }
+
 class ApiException implements Exception {
-  ApiException(this.message);
+  ApiException(this.message, {this.failure = ApiFailure.server, this.httpCode});
   final String message;
+  final ApiFailure failure;
+  final int? httpCode;
+
+  /// Text pro uživatele v jazyce zařízení (chyby serveru zůstávají v jazyce serveru).
+  String localized(AppLocalizations l) => switch (failure) {
+    ApiFailure.noResponse => l.apiNoResponse,
+    ApiFailure.unavailable => l.apiUnavailable,
+    ApiFailure.invalidResponse => l.apiInvalidResponse,
+    ApiFailure.http => l.apiHttpError(httpCode ?? 0),
+    ApiFailure.server => message,
+  };
+
   @override
   String toString() => message;
 }
@@ -175,9 +191,9 @@ class PredavkaClient extends ChangeNotifier {
           )
           .timeout(const Duration(seconds: 5));
     } on TimeoutException {
-      throw ApiException('Server neodpovídá');
+      throw ApiException('Server neodpovídá', failure: ApiFailure.noResponse);
     } catch (_) {
-      throw ApiException('Server není dostupný');
+      throw ApiException('Server není dostupný', failure: ApiFailure.unavailable);
     }
     Object? decoded;
     try {
@@ -187,7 +203,8 @@ class PredavkaClient extends ChangeNotifier {
     }
     if (res.statusCode >= 400) {
       final err = decoded is Map ? decoded['error'] : null;
-      throw ApiException(err is String && err.isNotEmpty ? err : 'Chyba ${res.statusCode}');
+      if (err is String && err.isNotEmpty) throw ApiException(err);
+      throw ApiException('Chyba ${res.statusCode}', failure: ApiFailure.http, httpCode: res.statusCode);
     }
     return decoded is Map ? decoded.cast<String, dynamic>() : null;
   }
@@ -210,14 +227,16 @@ class PredavkaClient extends ChangeNotifier {
     final c = client ?? http.Client();
     try {
       final res = await c.get(Uri.parse('${normalizeBaseUrl(baseUrl)}/api/state')).timeout(const Duration(seconds: 5));
-      if (res.statusCode >= 400) throw ApiException('Chyba ${res.statusCode}');
+      if (res.statusCode >= 400) {
+        throw ApiException('Chyba ${res.statusCode}', failure: ApiFailure.http, httpCode: res.statusCode);
+      }
       final decoded = jsonDecode(utf8.decode(res.bodyBytes));
-      if (decoded is! Map) throw ApiException('Neplatná odpověď serveru');
+      if (decoded is! Map) throw ApiException('Neplatná odpověď serveru', failure: ApiFailure.invalidResponse);
       return Snapshot.fromJson(decoded.cast<String, dynamic>());
     } on ApiException {
       rethrow;
     } catch (_) {
-      throw ApiException('Server není dostupný');
+      throw ApiException('Server není dostupný', failure: ApiFailure.unavailable);
     } finally {
       if (client == null) c.close();
     }
