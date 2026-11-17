@@ -81,7 +81,7 @@ type TTS struct {
 type EscPOS struct {
 	Enabled  bool   `yaml:"enabled"`
 	Listen   string `yaml:"listen"`   // ":9100"
-	Forward  string `yaml:"forward"`  // skutečná tiskárna "192.168.1.50:9100" (prázdné = jen sniff)
+	Forward  string `yaml:"forward"`  // skutečná tiskárna "<printer-ip>:9100" (prázdné = jen sniff)
 	Charset  string `yaml:"charset"`  // "cp852" | "cp1250" | "utf8"
 	TableRe  string `yaml:"table_re"` // regex se skupinou (?P<table>)
 	ItemRe   string `yaml:"item_re"`  // regex se skupinami (?P<qty>) (?P<name>)
