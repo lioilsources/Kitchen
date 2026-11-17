@@ -3,3 +3,23 @@
 *.db-wal
 *.db-shm
 /config.yaml
+# devconv:start
+.env
+.env.*
+!.env.example
+*.p8
+*.p12
+*.jks
+key.properties
+.DS_Store
+.claude/settings.local.json
+CLAUDE.local.md
+bin/
+*.test
+*.out
+.dart_tool/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+lib/**/secrets.dart
+# devconv:end

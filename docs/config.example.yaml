@@ -109,13 +109,13 @@ tts:
 escpos:
   enabled: true
   listen: ":9100"                # pokladna tiskne sem místo na tiskárnu
-  forward: "192.168.1.50:9100"   # skutečná kuchyňská tiskárna (prázdné = jen odposlech)
+  forward: "<printer-ip>:9100"   # skutečná kuchyňská tiskárna (prázdné = jen odposlech)
   charset: cp852                 # cp852 | cp1250 | utf8 (ESC t n v datech má přednost)
   # Regexy se dají přepsat per restaurace (výchozí viz internal/ingest/escpos/parse.go):
   # table_re: '(?i)st[ůu]l\s*(?P<table>\d+)'
   # item_re:  '^\s*(?P<qty>\d+)\s*x\s+(?P<name>.+)$'
 
 notify:
-  # Push na telefon/hodinky obsluhy, např. ntfy server na LAN: http://192.168.1.10:2586/predavka
+  # Push na telefon/hodinky obsluhy, např. ntfy server na LAN: http://<ntfy-host>:2586/predavka
   webhook_url: ""
   kinds: [pass_aging, complete]
