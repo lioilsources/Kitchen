@@ -6,7 +6,7 @@
     <application
         android:label="Předávka"
         android:usesCleartextTraffic="true"
-        android:banner="@mipmap/ic_launcher"
+        android:banner="@drawable/banner"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
