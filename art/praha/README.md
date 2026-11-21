@@ -85,3 +85,65 @@ Prompt (`{subj}` podle tabulky níže):
 | coleslaw | a bowl of coleslaw salad with grated horseradish |
 | brownie | a chocolate brownie with a scoop of vanilla ice cream and caramel with peanuts |
 | creme-brulee | crème brûlée with caramelized sugar crust garnished with fresh berries |
+| hovezi-jazyk | slices of smoked beef tongue with horseradish, pickles and bread |
+| burty-na-pivu | Czech sausages (buřty) braised in dark beer with onions and bread |
+| marinovane-syry | a jar and plate of marinated cheeses (gouda, blue cheese, camembert) in oil with onion and chili |
+| roastbeef-chleb | thin rare roast beef slices on toasted sourdough bread with remoulade |
+| jatrova-pastika | a rustic liver pâté with roasted meat pieces and bread |
+| veprove-ve-sklenicce | pork rillettes in a small glass jar with toasted bread and pickled onions |
+| buckova-pomazanka | a bowl of pork belly spread with onion on rye bread |
+| skvarky | a bowl of crispy pork cracklings dusted with smoked paprika and chili |
+| kureci-polevka | a bowl of clear chicken soup with noodles, carrot and chicken pieces |
+| kulajda | a bowl of creamy Czech dill soup kulajda with potatoes, mushrooms and a soft poached egg |
+| gulas | Czech beef goulash with sliced bread dumplings and raw onion rings |
+| panenske-rizecky | small breaded pork tenderloin schnitzels with potato salad |
+| kureci-supreme | a roasted chicken supreme breast with paprika sauce and a potato croquette |
+| smazeny-syr | a fried breaded cheese slab with tartar sauce and boiled new potatoes |
+| cizrna | a plate of chickpea purée with coriander, olive oil and flatbread |
+| svickova | Czech svíčková: sliced beef in creamy vegetable sauce with bread dumplings, cranberries and whipped cream |
+| veprova-panenka | grilled pork tenderloin medallions with vegetables and sauce |
+| flank-steak | sliced medium-rare grilled flank steak with chimichurri |
+| losos-filet | a pan-seared salmon fillet with crispy skin and vegetables |
+| kachni-prso | sliced pink roasted duck breast with red cabbage and sauce |
+| prkenko-staroceske | an old Czech wooden board with smoked meats, sausages, pickled cheese, cracklings, horseradish and bread |
+| prkenko-masaryka | a large wooden sharing board with Czech cold cuts, cheeses, spreads, pickles and bread for four |
+| variace-sklenicek | several small glass jars with Czech spreads, pâtés and pickles on a board with bread |
+| salat-gorgonzola | a leafy green salad with crumbled gorgonzola, walnuts and pear |
+| caesar-salat | a classic Caesar salad with romaine, croutons and parmesan, no meat |
+| zemlovka | Czech bread pudding žemlovka with apples and cinnamon, golden baked |
+| utopenec | Czech pickled sausage utopenec in a jar with onion, chili peppers and pickles, with sourdough bread |
+| syrove-prkenko | a cheese tasting board with Czech cheeses, gingerbread and apricot chutney |
+| pivni-degustace | a beer snack board with beer cheese spread, Prague ham, fermented vegetables and bread |
+| talian-houby | a grilled Czech sausage with pickled mushrooms, mustard sauce and sourdough bread |
+| talian-vyvar | a Czech sausage served in clear broth with horseradish and herbs |
+| langos | a fried langoš flatbread topped with quark cream, confit garlic, tomatoes and fried basil |
+| klobasa-xxl | a huge grilled brewery sausage with mustard, horseradish, pickled vegetables and bread |
+| knedlik-zebro | a poppy-seed potato dumpling stuffed with smoked rib, red cabbage, crispy onion and red wine sauce |
+| rizek-xxl | an oversized breaded pork schnitzel with Czech potato salad and lemon |
+| kanci-gulas | wild boar goulash with bread dumplings, onion and herbs |
+| specle-lanyz | creamy spätzle with shaved black truffle, a soft egg yolk and parsley oil |
+| grilovana-sunka | a thick grilled slice of Prague ham with buttery mashed potatoes, kohlrabi and mustard sauce |
+| caesar-kruti | a Caesar salad with sliced turkey breast, soft egg, bacon crumbs and croutons |
+| salat-kozi-syr | mixed leaf salad with goat cheese, beetroot, apricots and raspberries |
+| trdelnik | torn trdelník chimney cake pieces with quark, plum jam and nut brittle |
+| ovocny-knedlik | a large Czech fruit dumpling with brown butter, grated quark and sugar |
+| rib-eye | a sliced dry-aged rib eye steak, medium rare |
+| biftek | a thick beef tenderloin steak, medium rare, with grenaille potatoes |
+| chateaubriand | a flambéed chateaubriand for two sliced on a board with grenaille potatoes and salad |
+| kaviar | a tin of black caviar with crème fraîche, chives, lemon and a crisp waffle |
+| tunak-nicoise | seared tuna niçoise salad with green beans, olives, egg and potatoes |
+| tatarak-losos | salmon tartare with crème fraîche, orange and shaved fennel |
+| carpaccio | thin veal carpaccio with shimeji mushrooms, capers and black garlic |
+| stracciatella | creamy buffalo stracciatella with pine nuts, basil, tomato-olive tapenade and strawberries |
+| svatojakubky | seared scallops with carrot-orange purée, caviar, beurre blanc and white asparagus |
+| cibulovy-krem | a bowl of creamy onion soup with baked goat cheese, bacon and herb baguette |
+| kure-bretan | Brittany-style roasted chicken with chicory salad, walnuts, bacon, roquefort, apple and cider sauce |
+| svickova-rossini | beef tenderloin Rossini topped with foie gras and truffle on potato rösti |
+| morsky-vlk | sea bass fillet with prawn, polenta, razor clams, mussels, capers and sauce vierge |
+| risotto | saffron risotto with artichokes, peas, crème fraîche and pecorino |
+| kukuricne-kure | a corn-fed chicken leg with grapes, bacon, mushrooms and potato purée |
+| siven | a roasted char fillet with velouté, almonds, capers, crayfish and trout caviar |
+| nugatovy-dortik | a small nougat cake with raspberry sauce and salted caramel ice cream |
+| tropicana | coconut mousse dessert with tropical fruit, Belgian chocolate and pineapple sorbet |
+| vetrnik | a Czech větrník choux pastry with mascarpone cream, caramel cream and fresh strawberries |
+| choux-kastan | a choux pastry filled with chestnut cream |
