@@ -1,0 +1,43 @@
+# Pivovar U Supa: menu restaurace ze společného katalogu menus/praha/dishes.yaml (zdroj: pivovarusupa.cz/menu/a-la-carte).
+#   make run CONFIG=menus/praha/u-supa.yaml
+# Položka menu potřebuje jen sku; stanici, čas apod. lze přepsat přímo tady.
+listen: ":8088"
+data_file: "u-supa.db"
+art_dir: "art/praha"
+catalog: dishes.yaml
+stations:
+  - {id: gril,    name: Gril,     parallelism: 4}
+  - {id: teple,   name: Teplá,    parallelism: 3}
+  - {id: studena, name: Studená,  parallelism: 2}
+  - {id: dezert,  name: Dezerty,  parallelism: 2}
+course_names: {1: předkrm, 2: hlavní, 3: dezert}
+menu:
+  - {sku: utopenec}
+  - {sku: syrove-prkenko}
+  - {sku: pivni-degustace}
+  - {sku: talian-houby}
+  - {sku: talian-vyvar}
+  - {sku: langos}
+  - {sku: klobasa-xxl}
+  - {sku: knedlik-zebro}
+  - {sku: rizek-xxl}
+  - {sku: kanci-gulas}
+  - {sku: specle-lanyz}
+  - {sku: grilovana-sunka}
+  - {sku: caesar-kruti}
+  - {sku: salat-kozi-syr}
+  - {sku: trdelnik}
+  - {sku: ovocny-knedlik}
+  - {sku: hovezi-tatarak}
+  - {sku: hovezi-vyvar}
+  - {sku: kachni-stehno}
+  - {sku: prazska-sunka}
+  - {sku: veprove-koleno}
+  - {sku: hranolky-lanyz}
+  - {sku: coleslaw}
+  - {sku: kulajda}
+  - {sku: kureci-supreme}
+  - {sku: smazeny-syr}
+  - {sku: veprove-ve-sklenicce}
+tts: {engine: say, say_voice: Zuzana, output: play, play_cmd: [afplay]}
+escpos: {enabled: true, listen: ":9100", forward: "", charset: cp852}

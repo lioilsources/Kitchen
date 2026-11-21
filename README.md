@@ -45,16 +45,30 @@ make run CONFIG=config.kids.yaml      # macOS povolí příchozí spojení; IP M
 
 Novou hru začneš smazáním `kids.db`.
 
-## Pražská restaurace (reálné menu)
+## Pražské restaurace (reálná menu)
 
-`config.praha.yaml`: 4 stanice, 133 jídel, menu poskládané z jídelních lístků pražských restaurací (zatím U Matěje, Steiner's,
-Folklore Garden, Ribs of Prague, Masaryčka, U Supa, Obecní dům; další podle [žebříčku Praguest](https://www.praguest.com/cz/nejlepsi-restaurace-v-praze)).
-`name` je krátký název na displeje, `aliases` drží celý název z lístku, takže bon z pokladny trefí správné jídlo.
-Fotky jídel `art/praha/<sku>.jpg` (FLUX.1-schnell, prompty v [`art/praha/README.md`](art/praha/README.md)).
+Společný katalog jídel `menus/praha/dishes.yaml` (133 jídel z lístků pražských restaurací podle
+[žebříčku Praguest](https://www.praguest.com/cz/nejlepsi-restaurace-v-praze)) a každá restaurace má vlastní menu
+`menus/praha/<restaurace>.yaml`, které z katalogu bere jídla jen podle `sku` (stanici, čas apod. si může přepsat).
+`name` je krátký název na displeje, `aliases` drží celé názvy z lístků, takže bon z pokladny trefí správné jídlo.
+Fotky `art/praha/<sku>.jpg` jsou společné (FLUX.1-schnell, prompty v [`art/praha/README.md`](art/praha/README.md)).
+
+| Restaurace | Config | Jídel |
+|---|---|---|
+| U Matěje | `menus/praha/umateje.yaml` | 20 |
+| Steiner's (Grand Hotel Bohemia) | `menus/praha/steiners.yaml` | 17 |
+| Folklore Garden | `menus/praha/folklore-garden.yaml` | 11 |
+| Ribs of Prague | `menus/praha/ribs-of-prague.yaml` | 26 |
+| Masaryčka | `menus/praha/masarycka.yaml` | 32 |
+| Pivovar U Supa | `menus/praha/u-supa.yaml` | 27 |
+| Restaurace Obecní dům | `menus/praha/obecni-dum.yaml` | 27 |
+| všechno z katalogu | `menus/praha/vse.yaml` | 133 |
 
 ```bash
-make run CONFIG=config.praha.yaml
+make run CONFIG=menus/praha/u-supa.yaml
 ```
+
+Nové jídlo: řádek do `dishes.yaml` (+ řádek `sku | subj` do `art/praha/README.md` na fotku), pak `- {sku: …}` do menu restaurace.
 
 ## Komponenty
 

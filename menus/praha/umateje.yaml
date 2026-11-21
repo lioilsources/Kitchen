@@ -1,0 +1,36 @@
+# U Matěje: menu restaurace ze společného katalogu menus/praha/dishes.yaml (zdroj: umateje1.cz/menu, lístek z 20. 11. 2026).
+#   make run CONFIG=menus/praha/umateje.yaml
+# Položka menu potřebuje jen sku; stanici, čas apod. lze přepsat přímo tady.
+listen: ":8088"
+data_file: "umateje.db"
+art_dir: "art/praha"
+catalog: dishes.yaml
+stations:
+  - {id: gril,    name: Gril,     parallelism: 4}
+  - {id: teple,   name: Teplá,    parallelism: 3}
+  - {id: studena, name: Studená,  parallelism: 2}
+  - {id: dezert,  name: Dezerty,  parallelism: 2}
+course_names: {1: předkrm, 2: hlavní, 3: dezert}
+menu:
+  - {sku: salat-dyne}
+  - {sku: tatarak-tvaruzky}
+  - {sku: losos-repa}
+  - {sku: kapri-hranolky}
+  - {sku: husi-topinka}
+  - {sku: foie-gras}
+  - {sku: drstkova}
+  - {sku: polevka-dne}
+  - {sku: tagliatelle-repa}
+  - {sku: candat}
+  - {sku: kureci-stehno}
+  - {sku: husi-stehno}
+  - {sku: kanci-rizek}
+  - {sku: teleci-pavoucek}
+  - {sku: veprove-zebro}
+  - {sku: detsky-rizek}
+  - {sku: tvarohove-buchty}
+  - {sku: karamelove-vejce}
+  - {sku: dynovy-dezert}
+  - {sku: sorbet}
+tts: {engine: say, say_voice: Zuzana, output: play, play_cmd: [afplay]}
+escpos: {enabled: true, listen: ":9100", forward: "", charset: cp852}

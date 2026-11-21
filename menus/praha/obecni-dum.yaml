@@ -1,0 +1,43 @@
+# Restaurace Obecní dům: menu restaurace ze společného katalogu menus/praha/dishes.yaml (zdroj: restauraceod.cz/cz/menu).
+#   make run CONFIG=menus/praha/obecni-dum.yaml
+# Položka menu potřebuje jen sku; stanici, čas apod. lze přepsat přímo tady.
+listen: ":8088"
+data_file: "obecni-dum.db"
+art_dir: "art/praha"
+catalog: dishes.yaml
+stations:
+  - {id: gril,    name: Gril,     parallelism: 4}
+  - {id: teple,   name: Teplá,    parallelism: 3}
+  - {id: studena, name: Studená,  parallelism: 2}
+  - {id: dezert,  name: Dezerty,  parallelism: 2}
+course_names: {1: předkrm, 2: hlavní, 3: dezert}
+menu:
+  - {sku: rib-eye}
+  - {sku: biftek}
+  - {sku: chateaubriand}
+  - {sku: kaviar}
+  - {sku: tunak-nicoise}
+  - {sku: tatarak-losos}
+  - {sku: carpaccio}
+  - {sku: stracciatella}
+  - {sku: svatojakubky}
+  - {sku: cibulovy-krem}
+  - {sku: kure-bretan}
+  - {sku: svickova-rossini}
+  - {sku: morsky-vlk}
+  - {sku: risotto}
+  - {sku: kukuricne-kure}
+  - {sku: siven}
+  - {sku: nugatovy-dortik}
+  - {sku: tropicana}
+  - {sku: vetrnik}
+  - {sku: choux-kastan}
+  - {sku: hovezi-tatarak}
+  - {sku: hovezi-vyvar}
+  - {sku: kachni-stehno}
+  - {sku: teleci-rizek}
+  - {sku: palacinky-flambe}
+  - {sku: sorbet}
+  - {sku: syrove-prkenko}
+tts: {engine: say, say_voice: Zuzana, output: play, play_cmd: [afplay]}
+escpos: {enabled: true, listen: ":9100", forward: "", charset: cp852}

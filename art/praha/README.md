@@ -1,4 +1,4 @@
-# Fotky jídel pro `config.praha.yaml`
+# Fotky jídel pro katalog `menus/praha/dishes.yaml`
 
 Fotorealistické fotky jídel, `<sku>.jpg`, 768×768, JPEG kvalita 85.
 
@@ -6,6 +6,7 @@ Fotorealistické fotky jídel, `<sku>.jpg`, 768×768, JPEG kvalita 85.
 |---|---|
 | Model | [FLUX.1-schnell](https://huggingface.co/black-forest-labs/FLUX.1-schnell) (Apache 2.0), 1024×1024, 4 kroky, seed 4242 |
 | Stroj | L40S (ComfyUI) |
+| Vygenerováno | 21. 11. 2026, 133/133 |
 | Postproces | zmenšení na 768 px, JPEG q85 |
 
 Prompt (`{subj}` podle tabulky níže):

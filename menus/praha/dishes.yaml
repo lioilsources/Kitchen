@@ -1,29 +1,16 @@
-# Pražská restaurace: menu poskládané z jídelních lístků skutečných pražských podniků (zdroj u každého bloku).
-#   make run CONFIG=config.praha.yaml   →  http://localhost:8088
-# name = krátký název na displeje, aliases = celý název z lístku (tak chodí z pokladny na bonu).
-# Fotky jídel: art/praha/<sku>.jpg (FLUX.1-schnell, viz art/praha/README.md); dokud chybí, displeje ukazují emoji.
-listen: ":8088"
-data_file: "praha.db"
-art_dir: "art/praha"
-stations:
-  - {id: gril,    name: Gril,     parallelism: 4}
-  - {id: teple,   name: Teplá,    parallelism: 3}
-  - {id: studena, name: Studená,  parallelism: 2}
-  - {id: dezert,  name: Dezerty,  parallelism: 2}
-course_names: {1: předkrm, 2: hlavní, 3: dezert}
-menu:
+# Společný katalog jídel pražských restaurací. Restaurace si z něj berou jídla podle SKU (menus/praha/<restaurace>.yaml).
+# name = krátký název na displeje, aliases = celé názvy z lístků (tak chodí z pokladny na bonu), image = art/praha/<sku>.jpg.
+# Komentář u bloku = restaurace, ze které jídlo do katalogu přišlo; totéž jídlo z dalších podniků je jen alias.
+dishes:
   # --- U Matěje (umateje1.cz/menu, lístek z 20. 11. 2026) ---
-  # předkrmy
   - {sku: salat-dyne, name: Salát s dýní a cuketou, station: studena, prep: 5m, course: 1, emoji: "🥗", image: salat-dyne.jpg, aliases: ["Salát s marinovanou dýní a grilovanou cuketou, hruška, granátové jablko, lískové ořechy"], say: {one: dýňový salát, few: dýňové saláty, many: dýňových salátů, gender: m}}
   - {sku: tatarak-tvaruzky, name: Tatarák z tvarůžků, station: studena, prep: 5m, course: 1, emoji: "🧀", image: tatarak-tvaruzky.jpg, aliases: ["Tatarák z olomouckých tvarůžků, konfitovaný žloutek, topinka"], say: {one: tvarůžkový tatarák, few: tvarůžkové tataráky, many: tvarůžkových tataráků, gender: m}}
   - {sku: losos-repa, name: Losos v červené řepě, station: studena, prep: 5m, course: 1, emoji: "🐟", image: losos-repa.jpg, aliases: ["Marinovaný losos v červené řepě, salát z Granny Smith a řapíkatého celeru, podmáslí, křen"], say: {one: losos v řepě, few: lososi v řepě, many: lososů v řepě, gender: m}}
   - {sku: kapri-hranolky, name: Kapří hranolky, station: gril, prep: 7m, course: 1, emoji: "🐟", image: kapri-hranolky.jpg, aliases: ["Kapří hranolky s koprovou majonézou, zelný salát"], say: {one: porce kapřích hranolek, few: porce kapřích hranolek, many: porcí kapřích hranolek, gender: f}}
   - {sku: husi-topinka, name: Husí maso na topince, station: teple, prep: 6m, course: 1, emoji: "🍞", image: husi-topinka.jpg, aliases: ["Trhané husí maso na topince, petrželová majonéza, nakládaná cibulka a navet"], say: {one: husí topinka, few: husí topinky, many: husích topinek, gender: f}}
   - {sku: foie-gras, name: Foie gras, station: studena, prep: 6m, course: 1, emoji: "🍽️", image: foie-gras.jpg, aliases: ["Foie gras entier, kávový gel, marinovaná dýně a brioška"], say: {one: foie gras, few: foie gras, many: foie gras, gender: n}}
-  # polévky
   - {sku: drstkova, name: Dršťková polévka, station: teple, prep: 2m, course: 1, emoji: "🍲", image: drstkova.jpg, aliases: [dršťková, dršťkovka], say: {one: dršťková, few: dršťkové, many: dršťkových, gender: f}}
   - {sku: polevka-dne, name: Polévka dne, station: teple, prep: 2m, course: 1, emoji: "🥣", image: polevka-dne.jpg, aliases: ["Polévka dle denní nabídky", polévka], say: {one: polévka, few: polévky, many: polévek, gender: f}}
-  # hlavní chody
   - {sku: tagliatelle-repa, name: Tagliatelle s řepou, station: teple, prep: 9m, course: 2, emoji: "🍝", image: tagliatelle-repa.jpg, aliases: ["Tagliatelle se zadělávanou červenou řepou, pecorino a piniové oříšky", tagliatelle], say: {one: tagliatelle, few: tagliatelle, many: tagliatelle, gender: n}}
   - {sku: candat, name: Candát na másle, station: gril, prep: 12m, prep_p90: 16m, course: 2, emoji: "🐟", image: candat.jpg, aliases: ["Candát na másle, kořenová zelenina, červená řepa, smažený kadeřávek, pěna z pečené dýně", candát], say: {one: candát, few: candáti, many: candátů, gender: m}}
   - {sku: kureci-stehno, name: Kuřecí stehno s rýží, station: gril, prep: 14m, course: 2, emoji: "🍗", image: kureci-stehno.jpg, aliases: ["Farmářské kuřecí stehno, dušená rýže se slaninou", kuřecí stehno], say: {one: kuřecí stehno, few: kuřecí stehna, many: kuřecích stehen, gender: n}}
@@ -32,7 +19,6 @@ menu:
   - {sku: teleci-pavoucek, name: Telecí pavouček, station: teple, prep: 12m, course: 2, emoji: "🥩", image: teleci-pavoucek.jpg, aliases: ["Telecí pavouček s houbovo koprovou omáčkou, karlovarský knedlík", pavouček], say: {one: telecí pavouček, few: telecí pavoučci, many: telecích pavoučků, gender: m}}
   - {sku: veprove-zebro, name: Uzené žebro s křenovou, station: teple, prep: 10m, course: 2, emoji: "🍖", image: veprove-zebro.jpg, aliases: ["Uzené vepřové žebro, křenová omáčka, houskový knedlík", uzené žebro], say: {one: uzené žebro, few: uzená žebra, many: uzených žeber, gender: n}}
   - {sku: detsky-rizek, name: Dětský řízek s kaší, station: gril, prep: 8m, course: 2, emoji: "🧒", image: detsky-rizek.jpg, aliases: ["Dětské jídlo - 100g Kuřecí řízek s bramborovou kaší", dětské jídlo], say: {one: dětský řízek, few: dětské řízky, many: dětských řízků, gender: m}}
-  # dezerty
   - {sku: tvarohove-buchty, name: Tvarohové buchty, station: dezert, prep: 4m, course: 3, emoji: "🥐", image: tvarohove-buchty.jpg, aliases: ["Tvarohové buchty, rumová omáčka s rozinkami, vanilková zmrzlina", buchty], say: {one: porce buchet, few: porce buchet, many: porcí buchet, gender: f}}
   - {sku: karamelove-vejce, name: Karamelové vejce s mangem, station: dezert, prep: 3m, course: 3, emoji: "🥚", image: karamelove-vejce.jpg, aliases: ["Karamelové vejce s mangem"], say: {one: karamelové vejce, few: karamelová vejce, many: karamelových vajec, gender: n}}
   - {sku: dynovy-dezert, name: Dýňový dezert, station: dezert, prep: 3m, course: 3, emoji: "🎃", image: dynovy-dezert.jpg, aliases: ["Dýňový dezert, pomeranče, perník"], say: {one: dýňový dezert, few: dýňové dezerty, many: dýňových dezertů, gender: m}}
@@ -156,5 +142,3 @@ menu:
   - {sku: tropicana, name: Tropicana, station: dezert, prep: 3m, course: 3, emoji: "🥥", image: tropicana.jpg, aliases: ["Tropicana, kokosová mousse, tropické ovoce, belgická čokoláda, ananasový sorbet"], say: {one: tropicana, few: tropicany, many: tropican, gender: f}}
   - {sku: vetrnik, name: Větrník, station: dezert, prep: 2m, course: 3, emoji: "🧁", image: vetrnik.jpg, aliases: ["Větrník, krém z mascarpone a smetany, karamelový krém, čerstvé jahody, jahodová omáčka", "větrník"], say: {one: větrník, few: větrníky, many: větrníků, gender: m}}
   - {sku: choux-kastan, name: Pâte à choux s kaštany, station: dezert, prep: 3m, course: 3, emoji: "🌰", image: choux-kastan.jpg, aliases: ["Pâte à choux, kaštanový krém"], say: {one: kaštanový dezert, few: kaštanové dezerty, many: kaštanových dezertů, gender: m}}
-tts: {engine: say, say_voice: Zuzana, output: play, play_cmd: [afplay]}
-escpos: {enabled: true, listen: ":9100", forward: "", charset: cp852}
