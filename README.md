@@ -45,6 +45,17 @@ make run CONFIG=config.kids.yaml      # macOS povolí příchozí spojení; IP M
 
 Novou hru začneš smazáním `kids.db`.
 
+## Pražská restaurace (reálné menu)
+
+`config.praha.yaml`: 4 stanice, menu poskládané z jídelních lístků pražských restaurací (zatím U Matěje, Steiner's,
+Folklore Garden, Ribs of Prague; další podle [žebříčku Praguest](https://www.praguest.com/cz/nejlepsi-restaurace-v-praze)).
+`name` je krátký název na displeje, `aliases` drží celý název z lístku, takže bon z pokladny trefí správné jídlo.
+Fotky jídel `art/praha/<sku>.jpg` (FLUX.1-schnell, prompty v [`art/praha/README.md`](art/praha/README.md)).
+
+```bash
+make run CONFIG=config.praha.yaml
+```
+
 ## Komponenty
 
 ```
