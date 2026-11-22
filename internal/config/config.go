@@ -4,6 +4,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -18,10 +19,13 @@ type Config struct {
 	ArtDir   string          `yaml:"art_dir"` // obrázky jídel servírované na /art/ (MenuItem.Image)
 	Stations []model.Station `yaml:"stations"`
 	Menu     []MenuItem      `yaml:"menu"`
-	Settings Settings        `yaml:"settings"`
-	TTS      TTS             `yaml:"tts"`
-	EscPOS   EscPOS          `yaml:"escpos"`
-	Notify   Notify          `yaml:"notify"`
+	// Catalog: shared dish pool (YAML with `dishes: [MenuItem]`), path relative to this config file.
+	// Menu items are completed from it by SKU; an empty menu takes the whole catalog.
+	Catalog  string   `yaml:"catalog"`
+	Settings Settings `yaml:"settings"`
+	TTS      TTS      `yaml:"tts"`
+	EscPOS   EscPOS   `yaml:"escpos"`
+	Notify   Notify   `yaml:"notify"`
 	// CourseNames: jak se chod jmenuje v hlášce "Stůl sedm, připravit hlavní."
 	CourseNames map[int]string `yaml:"course_names"`
 }
@@ -124,7 +128,93 @@ func Load(path string) (*Config, error) {
 	if err := yaml.Unmarshal(b, c); err != nil {
 		return nil, fmt.Errorf("%s: %w", path, err)
 	}
+	if c.Catalog != "" {
+		cat := c.Catalog
+		if !filepath.IsAbs(cat) {
+			cat = filepath.Join(filepath.Dir(path), cat)
+		}
+		dishes, err := LoadCatalog(cat)
+		if err != nil {
+			return nil, err
+		}
+		if c.Menu, err = MergeCatalog(c.Menu, dishes); err != nil {
+			return nil, fmt.Errorf("%s: %w", path, err)
+		}
+	}
 	return c, c.Validate()
+}
+
+// LoadCatalog reads a shared dish pool: a YAML file with `dishes: [MenuItem]`.
+func LoadCatalog(path string) ([]MenuItem, error) {
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	var f struct {
+		Dishes []MenuItem `yaml:"dishes"`
+	}
+	if err := yaml.Unmarshal(b, &f); err != nil {
+		return nil, fmt.Errorf("%s: %w", path, err)
+	}
+	return f.Dishes, nil
+}
+
+// MergeCatalog completes menu items from the catalog by SKU: fields set in the menu win,
+// aliases are the union (menu first). An empty menu returns the whole catalog.
+func MergeCatalog(menu, dishes []MenuItem) ([]MenuItem, error) {
+	if len(menu) == 0 {
+		return append([]MenuItem(nil), dishes...), nil
+	}
+	bySKU := make(map[string]MenuItem, len(dishes))
+	for _, d := range dishes {
+		bySKU[d.SKU] = d
+	}
+	out := make([]MenuItem, 0, len(menu))
+	for _, m := range menu {
+		d, ok := bySKU[m.SKU]
+		if !ok {
+			if m.Name == "" {
+				return nil, fmt.Errorf("menu %q: not in catalog", m.SKU)
+			}
+			out = append(out, m)
+			continue
+		}
+		if m.Name == "" {
+			m.Name = d.Name
+		}
+		if m.Station == "" {
+			m.Station = d.Station
+		}
+		if m.Prep == 0 {
+			m.Prep = d.Prep
+		}
+		if m.PrepP90 == 0 {
+			m.PrepP90 = d.PrepP90
+		}
+		if m.Course == 0 {
+			m.Course = d.Course
+		}
+		if m.Say == (Say{}) {
+			m.Say = d.Say
+		}
+		if m.Emoji == "" {
+			m.Emoji = d.Emoji
+		}
+		if m.Image == "" {
+			m.Image = d.Image
+		}
+		seen := map[string]bool{}
+		var aliases []string
+		for _, a := range append(append([]string(nil), m.Aliases...), d.Aliases...) {
+			if !seen[a] {
+				seen[a] = true
+				aliases = append(aliases, a)
+			}
+		}
+		m.Aliases = aliases
+		out = append(out, m)
+	}
+	return out, nil
 }
 
 func (c *Config) Validate() error {

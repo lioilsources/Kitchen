@@ -1,0 +1,33 @@
+# Steiner's Restaurant (Grand Hotel Bohemia): menu restaurace ze společného katalogu menus/praha/dishes.yaml (zdroj: à la carte PDF 2025/7).
+#   make run CONFIG=menus/praha/steiners.yaml
+# Položka menu potřebuje jen sku; stanici, čas apod. lze přepsat přímo tady.
+listen: ":8088"
+data_file: "steiners.db"
+art_dir: "art/praha"
+catalog: dishes.yaml
+stations:
+  - {id: gril,    name: Gril,     parallelism: 4}
+  - {id: teple,   name: Teplá,    parallelism: 3}
+  - {id: studena, name: Studená,  parallelism: 2}
+  - {id: dezert,  name: Dezerty,  parallelism: 2}
+course_names: {1: předkrm, 2: hlavní, 3: dezert}
+menu:
+  - {sku: roastbeef-teleci}
+  - {sku: kachni-pastika}
+  - {sku: degustace-predkrmu}
+  - {sku: tatarak-repa}
+  - {sku: sneci}
+  - {sku: prazska-sunka}
+  - {sku: hovezi-vyvar}
+  - {sku: kremova-polevka}
+  - {sku: pstruh-topinambur}
+  - {sku: spagety-aglio}
+  - {sku: kachni-stehno}
+  - {sku: kralik}
+  - {sku: bourguignon}
+  - {sku: teleci-rizek}
+  - {sku: veganske-sote}
+  - {sku: dezert-sezona}
+  - {sku: palacinky-flambe}
+tts: {engine: say, say_voice: Zuzana, output: play, play_cmd: [afplay]}
+escpos: {enabled: true, listen: ":9100", forward: "", charset: cp852}

@@ -1,0 +1,48 @@
+# Masaryčka: menu restaurace ze společného katalogu menus/praha/dishes.yaml (zdroj: masaryckarestaurace.cz).
+#   make run CONFIG=menus/praha/masarycka.yaml
+# Položka menu potřebuje jen sku; stanici, čas apod. lze přepsat přímo tady.
+listen: ":8088"
+data_file: "masarycka.db"
+art_dir: "art/praha"
+catalog: dishes.yaml
+stations:
+  - {id: gril,    name: Gril,     parallelism: 4}
+  - {id: teple,   name: Teplá,    parallelism: 3}
+  - {id: studena, name: Studená,  parallelism: 2}
+  - {id: dezert,  name: Dezerty,  parallelism: 2}
+course_names: {1: předkrm, 2: hlavní, 3: dezert}
+menu:
+  - {sku: hovezi-jazyk}
+  - {sku: burty-na-pivu}
+  - {sku: marinovane-syry}
+  - {sku: roastbeef-chleb}
+  - {sku: jatrova-pastika}
+  - {sku: veprove-ve-sklenicce}
+  - {sku: buckova-pomazanka}
+  - {sku: skvarky}
+  - {sku: kureci-polevka}
+  - {sku: kulajda}
+  - {sku: gulas}
+  - {sku: panenske-rizecky}
+  - {sku: kureci-supreme}
+  - {sku: smazeny-syr}
+  - {sku: cizrna}
+  - {sku: svickova}
+  - {sku: veprova-panenka}
+  - {sku: flank-steak}
+  - {sku: losos-filet}
+  - {sku: kachni-prso}
+  - {sku: prkenko-staroceske}
+  - {sku: prkenko-masaryka}
+  - {sku: variace-sklenicek}
+  - {sku: salat-gorgonzola}
+  - {sku: caesar-salat}
+  - {sku: zemlovka}
+  - {sku: hovezi-tatarak}
+  - {sku: tatarak-repa}
+  - {sku: polevka-dne}
+  - {sku: brownie}
+  - {sku: dezert-sezona}
+  - {sku: caesar}
+tts: {engine: say, say_voice: Zuzana, output: play, play_cmd: [afplay]}
+escpos: {enabled: true, listen: ":9100", forward: "", charset: cp852}

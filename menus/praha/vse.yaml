@@ -1,0 +1,14 @@
+# Všechna jídla z katalogu najednou (prázdné menu = celý katalog), na zkoušení displejů a fotek.
+#   make run CONFIG=menus/praha/vse.yaml
+listen: ":8088"
+data_file: "praha-vse.db"
+art_dir: "art/praha"
+catalog: dishes.yaml
+stations:
+  - {id: gril,    name: Gril,     parallelism: 4}
+  - {id: teple,   name: Teplá,    parallelism: 3}
+  - {id: studena, name: Studená,  parallelism: 2}
+  - {id: dezert,  name: Dezerty,  parallelism: 2}
+course_names: {1: předkrm, 2: hlavní, 3: dezert}
+tts: {engine: say, say_voice: Zuzana, output: play, play_cmd: [afplay]}
+escpos: {enabled: true, listen: ":9100", forward: "", charset: cp852}

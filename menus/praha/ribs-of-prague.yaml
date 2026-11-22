@@ -1,0 +1,42 @@
+# Ribs of Prague: menu restaurace ze společného katalogu menus/praha/dishes.yaml (zdroj: ribsofprague.cz/en/menu, jen anglicky; aliasy = anglické názvy z bonu).
+#   make run CONFIG=menus/praha/ribs-of-prague.yaml
+# Položka menu potřebuje jen sku; stanici, čas apod. lze přepsat přímo tady.
+listen: ":8088"
+data_file: "ribs-of-prague.db"
+art_dir: "art/praha"
+catalog: dishes.yaml
+stations:
+  - {id: gril,    name: Gril,     parallelism: 4}
+  - {id: teple,   name: Teplá,    parallelism: 3}
+  - {id: studena, name: Studená,  parallelism: 2}
+  - {id: dezert,  name: Dezerty,  parallelism: 2}
+course_names: {1: předkrm, 2: hlavní, 3: dezert}
+menu:
+  - {sku: krevety-tempura}
+  - {sku: smazeny-cedar}
+  - {sku: hovezi-tatarak}
+  - {sku: caesar}
+  - {sku: cibulove-krouzky}
+  - {sku: jehneci-klobasa}
+  - {sku: kridla-chilli}
+  - {sku: kridla-buffalo}
+  - {sku: poutine}
+  - {sku: misa-ribs}
+  - {sku: zebra}
+  - {sku: jehneci-kolinko}
+  - {sku: teleci-zebra}
+  - {sku: rump-steak}
+  - {sku: tacos}
+  - {sku: burger-ribs}
+  - {sku: nugety}
+  - {sku: hranolky}
+  - {sku: hranolky-lanyz}
+  - {sku: brambor-popel}
+  - {sku: pecena-zelenina}
+  - {sku: coleslaw}
+  - {sku: brownie}
+  - {sku: creme-brulee}
+  - {sku: strudl}
+  - {sku: sorbet}
+tts: {engine: say, say_voice: Zuzana, output: play, play_cmd: [afplay]}
+escpos: {enabled: true, listen: ":9100", forward: "", charset: cp852}
