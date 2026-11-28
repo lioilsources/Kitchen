@@ -44,6 +44,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -86,3 +87,28 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+# Launcher icons for all platforms, generated from assets/icon/ by
+# `dart run flutter_launcher_icons` (commit the generated files).
+# icon.png is the store icon (512 px, no alpha); icon_foreground.png is the same
+# art on a transparent canvas, scaled into the Android adaptive-icon safe zone.
+# The Android TV banner (res/drawable-xhdpi/banner.png, 320x180) is not generated
+# by this tool; it is the same art plus the app name.
+flutter_launcher_icons:
+  image_path: "assets/icon/icon.png"
+  android: "ic_launcher"
+  adaptive_icon_background: "#1B1E25"
+  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
+  adaptive_icon_foreground_inset: 0
+  min_sdk_android: 21
+  ios: true
+  remove_alpha_ios: true
+  background_color_ios: "#1B1E25"
+  web:
+    generate: true
+    image_path: "assets/icon/icon.png"
+    background_color: "#1B1E25"
+    theme_color: "#1B1E25"
+  macos:
+    generate: true
+    image_path: "assets/icon/icon.png"
